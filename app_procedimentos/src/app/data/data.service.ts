@@ -1,0 +1,49 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, tap } from 'rxjs';
+
+export interface FileData {
+  fileName: string;
+  fileUrl: string;
+}
+@Injectable({
+  providedIn: 'root'
+})
+export class DataService {
+
+  private apiUrl = 'http://localhost:3000/api';
+  // private apiUrl = 'http://172.16.50.14:3000/api';
+  // private apiUrl = 'http://siq.grupotecnotextil.com:3000/api';
+  private iconsUrl = 'assets/icons.json';
+
+  constructor(private http: HttpClient) { }
+
+  getFolder(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-folders`).pipe(
+    );
+  }
+
+  getFiles(folderPath: string):Observable<FileData[]> {
+    return this.http.get<FileData[]>(`${this.apiUrl}/get-files?folder=${folderPath}`).pipe(
+      // tap((data: any) => console.log('Arquivos da pasta:', data))
+    )
+  }
+
+  getFileUrl(folder: string, file: string): string {
+    return `${this.apiUrl}/get-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
+  }
+
+  downloadFile(folder: string, file: string): Observable<Blob> {
+    const url = this.getFileUrl(folder, file);
+    return this.http.get(url, { responseType: 'blob' });
+  }
+
+  downloadPdfFile(folder: string, file: string): Observable<Blob> {
+    const url = `${this.apiUrl}/get-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
+    return this.http.get(url, { responseType: 'blob' });
+  }
+
+  getIcons(): Observable<{name: string, icon: string}[]> {
+    return this.http.get<{ name: string, icon: string }[]>(this.iconsUrl);
+  }
+}

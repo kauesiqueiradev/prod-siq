@@ -1,0 +1,29 @@
+<div class="container p-4">
+  
+  <div class="header_card d-flex justify-content-between">
+    <h1 class="card__name fs-6 fs-md-1">Procedimentos do Setor {{ folderName }}</h1>
+    <button (click)="goBackToProcedures()" class="btn btn-primary">Voltar</button>
+  </div>
+
+  <div class="card-details text-center table-responsive overflow-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Arquivo</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="files && files.length > 0; else noFiles">
+        <tr *ngFor="let file of files" >
+          <td> {{ file.fileName }}</td>
+          <td><a (click)="openPdfFile( file.fileUrl)" target="_blank" class="btn btn-primary">Visualizar</a></td>
+
+        </tr>
+      </tbody>
+      <ng-template #noFiles>
+        <tr>
+          <td colspan="2">{{ errorMessage }}</td>
+        </tr>
+      </ng-template>
+    </table>
+</div>
