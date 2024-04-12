@@ -20,11 +20,15 @@ export class AboutComponent {
           console.log('Email enviado com sucesso!', response);
           this.showSnackBar('E-mail enviado com sucesso!');
           this.clearFields();
+          this.subject ='';
+          this.message = '';
         },
         error => {
           console.error('Erro ao enviar o email: ', error);
         }
       );
+      this.subject ='';
+      this.message = '';
   }
 
   showSnackBar(message: string): void {

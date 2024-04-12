@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { LoginAuthService } from 'src/app/services/login-auth/login-auth.service';
 
 @Component({
@@ -23,22 +24,24 @@ export class LoginComponent{
     this.isLoading = true; 
 
     this.authService.login(this.cpfOrMat).subscribe(
-        user => {
-            if (user) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                this.router.navigate(['/home']);
-            } else {
-                // console.error('CPF ou Matricula não encontrado.');
-                alert("CPF ou Matricula não encontrados");
-            }
-        },
-        (error) => {
-            console.error('Erro ao realizar login:', error);
-            // console.log('Erro 1er')
+      user => {
+        if (user) {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            this.router.navigate(['/home']);
+            this.cpfOrMat = '';
+        } else {
+          // console.error('CPF ou Matricula não encontrado.');
+          alert("CPF ou Matricula não encontrados");
         }
+      },
+      (error) => {
+        console.error('Erro ao realizar login:', error);
+        // console.log('Erro 1er')
+      }
     ).add(() => {
         this.isLoading = false; 
     });
+    this.cpfOrMat = '';
 
   }
 

@@ -26,6 +26,10 @@
     border: 1px solid red;
 }
 
+.simple-keyboard {
+    max-width: 1024px;
+  }
+
 /* mobile*/
 @media screen and (min-width: 480px )
 {
