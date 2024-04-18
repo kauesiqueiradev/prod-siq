@@ -23,6 +23,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthGuard } from './auth/auth.guard';
 import { HomeChildComponent } from './pages/home/home-child/home-child.component';
 import { NgxTouchKeyboardModule }  from 'ngx-touch-keyboard';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PdfModalComponent } from './components/pdf-modal/pdf-modal.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { NgxTouchKeyboardModule }  from 'ngx-touch-keyboard';
     AboutComponent,
     PdfViewerComponent,
     HomeChildComponent,
+    PdfModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { NgxTouchKeyboardModule }  from 'ngx-touch-keyboard';
     NgxExtendedPdfViewerModule,
     MatSnackBarModule,
     NgxTouchKeyboardModule,
+    ModalModule.forRoot(),
   ],
   providers: [
     AuthGuard,

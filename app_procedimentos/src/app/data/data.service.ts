@@ -29,19 +29,19 @@ export class DataService {
     )
   }
 
-  getFileUrl(folder: string, file: string): string {
-    return `${this.apiUrl}/get-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
-  }
+  // getFileUrl(folder: string, file: string): string {
+  //   return `${this.apiUrl}/open-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
+  // }
 
-  downloadFile(folder: string, file: string): Observable<Blob> {
-    const url = this.getFileUrl(folder, file);
-    return this.http.get(url, { responseType: 'blob' });
-  }
+  // downloadFile(folder: string, file: string): Observable<Blob> {
+  //   const url = this.getFileUrl(folder, file);
+  //   return this.http.get(url, { responseType: 'blob' });
+  // }
 
-  downloadPdfFile(folder: string, file: string): Observable<Blob> {
-    const url = `${this.apiUrl}/get-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
-    return this.http.get(url, { responseType: 'blob' });
-  }
+  // downloadPdfFile(folder: string, file: string): Observable<Blob> {
+  //   const url = `${this.apiUrl}/open-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
+  //   return this.http.get(url, { responseType: 'blob' });
+  // }
 
   getIcons(): Observable<{name: string, icon: string}[]> {
     return this.http.get<{ name: string, icon: string }[]>(this.iconsUrl);

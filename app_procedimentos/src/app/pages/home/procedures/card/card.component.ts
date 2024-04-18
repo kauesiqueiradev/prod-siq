@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Card } from 'src/app/interface/card';
 import { DataService, FileData } from 'src/app/data/data.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { FileCacheService } from 'src/app/services/file-cache/file-cache.service';
-
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { PdfModalComponent } from 'src/app/components/pdf-modal/pdf-modal.component';
 
 @Component({
   selector: 'app-card',
@@ -23,12 +24,15 @@ export class CardComponent implements OnInit{
   files: FileData[] = [];
   errorMessage: string = '';
 
+  bsModalRef!: BsModalRef;
+
   constructor(
     private route: ActivatedRoute, 
     private folderService: DataService, 
     private router: Router, 
     private sanitizer: DomSanitizer, 
-    private fileCacheService: FileCacheService
+    private fileCacheService: FileCacheService,
+    private modalService: BsModalService,
   ) { }
   
   ngOnInit(): void {
@@ -72,13 +76,19 @@ export class CardComponent implements OnInit{
   }
  
   openPdfFile(fileUrl: string): void {
-    // Verifica se o arquivo já está em cache
+     // Verifica se o arquivo é um PDF
+     if (!fileUrl.toLowerCase().endsWith('.pdf')) {
+      console.error('O arquivo não é um PDF:', fileUrl);
+      return;
+    }
+      // Verifica se o arquivo já está em cache
     if (this.fileCacheService.isFileCached(fileUrl)) {
       // Se estiver em cache, abre o arquivo a partir do cache
       const cachedFile = this.fileCacheService.getCachedFile(fileUrl);
       if (cachedFile) {
-        const fileURL = URL.createObjectURL(cachedFile);
-        window.open(fileURL, '_blank');
+        const pdfUrl = URL.createObjectURL(cachedFile);
+        this.openPdfModal(pdfUrl);
+        // window.open(pdfUrl, '_blank');
       } else {
         console.error('O arquivo não está em cache:', fileUrl);
       }
@@ -86,14 +96,24 @@ export class CardComponent implements OnInit{
       // Se não estiver em cache, baixa o arquivo e o armazena em cache antes de abrir
       this.fileCacheService.cacheFile(fileUrl).subscribe(
         (file: Blob) => {
-          const fileURL = URL.createObjectURL(file);
-          window.open(fileURL, '_blank');
+          const pdfUrl = URL.createObjectURL(file);
+          // window.open(fileURL, '_blank');
+          this.openPdfModal(pdfUrl);
         },
         (error: any) => {
           console.error('Erro ao abrir o arquivo:', error);
         }
       );
     }
+  }
+
+  openPdfModal(pdfUrl: string): void {
+    console.log("PDF no card:", pdfUrl);
+
+    const initialState = {
+      cachedFile:  pdfUrl
+    };
+    this.bsModalRef = this.modalService.show(PdfModalComponent, { initialState });
   }
 
   getPaginaArquivos(): any[] {
@@ -107,7 +127,6 @@ export class CardComponent implements OnInit{
   }
 
   goBackToProcedures() {
-    
     this.router.navigate(['/home/procedures']);
   }
 }

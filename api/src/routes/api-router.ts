@@ -14,6 +14,8 @@ if (!rootFolderPath) {
     process.exit(1);
   }
 
+apiRouter.use('files', express.static(path.join(rootFolderPath, '1. Ativos', '1. Procedimentos')));
+
 apiRouter.get('/get-folders', (req, res) => {
     fs.readdir(rootFolderPath, (err, files) => {
         if (err) {
@@ -42,7 +44,7 @@ apiRouter.get('/get-files', (req, res) => {
             const fileUrls = files.map(file => {
                 return {
                     fileName: file,
-                    fileUrl: `/api/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(file)}`
+                    fileUrl: `/api/open-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(file)}`
                 };
             });
             res.json({ files: fileUrls });
@@ -51,7 +53,7 @@ apiRouter.get('/get-files', (req, res) => {
 })
 
 
-apiRouter.get('/get-file', (req,res) => {
+apiRouter.get('/open-file', (req,res) => {
     let folder = req.query.folder as string;
     let file = req.query.file as string;
     const filePath = path.join(rootFolderPath, folder, '1. Ativos', '1. Procedimentos', file);
