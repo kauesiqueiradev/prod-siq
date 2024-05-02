@@ -24,6 +24,8 @@ export class PdfViewerComponent implements OnInit{
       if (folderName && pdfPath) {
         this.pdfUrl = `/static-files/${folderName}${pdfPath}`
       }
+      console.log(folderName);
+      console.log(this.pdfUrl);
     })
   }
 }

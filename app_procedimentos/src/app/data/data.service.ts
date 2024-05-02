@@ -11,9 +11,9 @@ export interface FileData {
 })
 export class DataService {
 
-  private apiUrl = 'http://localhost:3000/api';
+  // private apiUrl = 'http://localhost:3000/api';
   // private apiUrl = 'http://172.16.50.14:3000/api';
-  // private apiUrl = 'http://siq.grupotecnotextil.com:3000/api';
+  private apiUrl = 'http://siq.grupotecnotextil.com:3000/api';
   private iconsUrl = 'assets/icons.json';
 
   constructor(private http: HttpClient) { }
@@ -29,6 +29,17 @@ export class DataService {
     )
   }
 
+  GenerateInvoicePDF(folderName: string, fileName: string){
+    return this.http.get(`${this.apiUrl}/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`,{observe:'response',responseType:'blob'});  
+  }
+
+  // getOpenFileUrl(folder: string, file: string): string {
+  //   return `${this.apiUrl}/api/open-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
+  // }
+
+
+
+  
   // getFileUrl(folder: string, file: string): string {
   //   return `${this.apiUrl}/open-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
   // }

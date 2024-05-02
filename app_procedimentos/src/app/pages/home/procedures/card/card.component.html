@@ -16,7 +16,10 @@
       <tbody *ngIf="files && files.length > 0; else noFiles">
         <tr *ngFor="let file of files" >
           <td> {{ file.fileName }}</td>
-          <td><a (click)="openPdfFile( file.fileUrl)" target="_blank" class="btn btn-primary">Visualizar</a></td>
+          <td>
+            <!-- <a (click)="openFile(folderName, file.fileUrl)" target="_blank" class="btn btn-primary">Visualizar</a> -->
+            <a (click)="PreviewInvoice(folderName, file.fileName)" class="btn btn-primary">Visualizar</a>
+          </td>
 
         </tr>
       </tbody>
@@ -27,3 +30,16 @@
       </ng-template>
     </table>
 </div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+	<div class="modal-header modal-lg">
+    <h4 class="modal-title" id="modal-basic-title"><b>{{selectedFileName}}</b></h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+        <ngx-extended-pdf-viewer [src]="pdfUrl" height="700px" width="1000px" [textLayer]="true"></ngx-extended-pdf-viewer>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger" (click)="d('Cross click')">Close</button>
+	</div>
+</ng-template>

@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node-terminal",
+            "name": "Run Script: ng",
+            "request": "launch",
+            "command": "npm run ng serve",
+            "cwd": "${workspaceFolder}\\app_procedimentos"
+        }
+    ]
+}

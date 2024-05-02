@@ -53,7 +53,7 @@ apiRouter.get('/get-files', (req, res) => {
 })
 
 
-apiRouter.get('/open-file', (req,res) => {
+apiRouter.get('/get-file', (req,res) => {
     let folder = req.query.folder as string;
     let file = req.query.file as string;
     const filePath = path.join(rootFolderPath, folder, '1. Ativos', '1. Procedimentos', file);
