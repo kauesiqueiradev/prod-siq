@@ -70,3 +70,7 @@ th:nth-child(2),
   text-align: right; 
 }
 
+.modal-lg {
+  width: 1200px;
+}
+

@@ -17,11 +17,7 @@
                 <!-- <input (input)="onInputChange($event)" (focus)="initKeyboard()" (blur)="closeKeyboard($event)" value ={{value}} type="text" [id]="cpfOrMat" [(ngModel)]="cpfOrMat" name="cpfOrMat" class="form-control" id="exampleInputEmail1" aria-describedby="CPFouMatricula" placeholder="CPF ou Matricula" [ngClass]="{ 'error': cpfOrMatInvalid }"> -->
                 <input 
                     inputmode="numeric"
-                    ngxTouchKeyboard
-                    ngxTouchKeyboardFullScreen="numeric"
-                    #touchKeyboard="ngxTouchKeyboard"
-                    (focus)="touchKeyboard.openPanel()" 
-                    (blur)="touchKeyboard.closePanel()"
+                    
                     type="text" 
                     [id]="cpfOrMat" 
                     [(ngModel)]="cpfOrMat" 

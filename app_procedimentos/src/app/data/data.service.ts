@@ -11,9 +11,9 @@ export interface FileData {
 })
 export class DataService {
 
-  private apiUrl = 'http://localhost:3000/api';
+  // private apiUrl = 'http://localhost:3000/api';
   // private apiUrl = 'http://172.16.50.14:3000/api';
-  // private apiUrl = 'http://siq.grupotecnotextil.com:3000/api';
+  private apiUrl = 'http://siq.grupotecnotextil.com:3000/api';
   private iconsUrl = 'assets/icons.json';
 
   constructor(private http: HttpClient) { }
@@ -29,19 +29,30 @@ export class DataService {
     )
   }
 
-  getFileUrl(folder: string, file: string): string {
-    return `${this.apiUrl}/get-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
+  GenerateInvoicePDF(folderName: string, fileName: string){
+    return this.http.get(`${this.apiUrl}/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`,{observe:'response',responseType:'blob'});  
   }
 
-  downloadFile(folder: string, file: string): Observable<Blob> {
-    const url = this.getFileUrl(folder, file);
-    return this.http.get(url, { responseType: 'blob' });
-  }
+  // getOpenFileUrl(folder: string, file: string): string {
+  //   return `${this.apiUrl}/api/open-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
+  // }
 
-  downloadPdfFile(folder: string, file: string): Observable<Blob> {
-    const url = `${this.apiUrl}/get-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
-    return this.http.get(url, { responseType: 'blob' });
-  }
+
+
+  
+  // getFileUrl(folder: string, file: string): string {
+  //   return `${this.apiUrl}/open-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
+  // }
+
+  // downloadFile(folder: string, file: string): Observable<Blob> {
+  //   const url = this.getFileUrl(folder, file);
+  //   return this.http.get(url, { responseType: 'blob' });
+  // }
+
+  // downloadPdfFile(folder: string, file: string): Observable<Blob> {
+  //   const url = `${this.apiUrl}/open-file?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
+  //   return this.http.get(url, { responseType: 'blob' });
+  // }
 
   getIcons(): Observable<{name: string, icon: string}[]> {
     return this.http.get<{ name: string, icon: string }[]>(this.iconsUrl);
