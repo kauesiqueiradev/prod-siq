@@ -1,0 +1,16 @@
+steps:
+  # Etapa para construir e implantar o backend Node.js
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['--prefix', 'api', 'install']
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['--prefix', 'api', 'run', 'build']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['run', 'deploy', 'meu-servico-api', '--image', 'gcr.io/$PROJECT_ID/meu-servico-api']
+
+  # Etapa para construir e implantar o frontend Angular
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['--prefix', 'app_procedimentos', 'install']
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['--prefix', 'app_procedimentos', 'run', 'build']
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['-m', 'cp', '-r', 'app_procedimentos/dist/*', 'gs://meu-bucket']

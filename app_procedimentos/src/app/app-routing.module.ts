@@ -13,7 +13,7 @@ import { HomeChildComponent } from './pages/home/home-child/home-child.component
 
 const routes: Routes = [
   {
-    path: 'login',
+    path: '',
     component:  LoginComponent
   },
   {
@@ -54,7 +54,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: '',
     pathMatch: "full"
   },
   {

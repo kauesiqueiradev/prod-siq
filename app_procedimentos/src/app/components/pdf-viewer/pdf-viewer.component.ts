@@ -13,19 +13,14 @@ export class PdfViewerComponent implements OnInit{
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    // this.route.url.subscribe(segments => {
-    //   const filePath = segments.map(segment => segment.path).join('/');
-    //   // this.pdfUrl = `assets/${filePath}`;
-    //   this.pdfUrl = `/static-files/${encodeURIComponent(this.folderName)}/1.%20Ativos/1.%20Procedimentos/${encodeURIComponent(filePath)}`
-    // });
-    this.route.queryParams.subscribe(params => {
-      const folderName = params['folderName'];
-      const pdfPath = params['pdfPath'];
-      if (folderName && pdfPath) {
-        this.pdfUrl = `/static-files/${folderName}${pdfPath}`
-      }
-      console.log(folderName);
-      console.log(this.pdfUrl);
-    })
+    // this.route.queryParams.subscribe(params => {
+    //   const folderName = params['folderName'];
+    //   const pdfPath = params['pdfPath'];
+    //   if (folderName && pdfPath) {
+    //     this.pdfUrl = `/static-files/${folderName}${pdfPath}`
+    //   }
+    //   console.log(folderName);
+    //   console.log(this.pdfUrl);
+    // })
   }
 }
