@@ -1,0 +1,17 @@
+<div class="folder-navigation">
+    <button *ngIf="parentPath" (click)="goBack()">Voltar</button>
+    <h3>Caminho Atual: {{ currentPath || 'Raiz' }}</h3>
+  </div>
+  
+  <div class="folder-contents">
+    <ul>
+      <li *ngFor="let item of contents">
+        <div *ngIf="item.type === 'folder'" (click)="loadFolder(currentPath + '/' + item.name)" class="folder">
+          📁 {{ item.name }}
+        </div>
+        <div *ngIf="item.type === 'video'" (click)="playVideo(item.path)" class="video">
+          🎥 {{ item.name }}
+        </div>
+      </li>
+    </ul>
+  </div>

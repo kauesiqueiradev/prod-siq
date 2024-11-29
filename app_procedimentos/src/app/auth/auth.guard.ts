@@ -4,44 +4,60 @@ import { LoginAuthService } from '../services/login-auth/login-auth.service';
 import { Observable, lastValueFrom, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+// @Injectable({
+//   providedIn: 'root'
+// })
 
-
-export class AuthGuard implements CanActivate {
-  constructor(private loginAuthService: LoginAuthService, private router: Router) {}
-
-  async canActivate(route: any, state: any): Promise<boolean> {
-    try {
-      const authenticated = await lastValueFrom(this.loginAuthService.isAuthenticated$)
-
-      if (!authenticated) {
-        const cpfOrMat = localStorage.getItem('currentUser')
-        if (cpfOrMat) {
-          const refresh = await lastValueFrom(this.loginAuthService.login(cpfOrMat))
-
-          if (!refresh) {
-            this.router.navigate([`/login`], { queryParams: { returnUrl: state.url } })
-            return false
-          }
-          
-          return !!refresh;
-        }
-        this.router.navigate(['/login']);
-        return false;
-      }
-      return authenticated;
-    } catch (error) {
-      console.error('Erro ao verificar autenticação:', error);
-      return false;
-    }
-  }
-}
 
 export const authGuard: CanActivateFn = async (route, state) => {
-  return await inject(AuthGuard).canActivate(route, state)
+  const loginAuthService = inject(LoginAuthService);
+  const router = inject(Router);
+
+  try {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    if (currentUser?.role === 'Visitante') {
+      console.log('Visitante autorizado:', currentUser);
+      return true;
+    }
+
+    const authenticated = await lastValueFrom(loginAuthService.isAuthenticated$);
+    if (authenticated) {
+      console.log('Usuário autentica via API:', currentUser);
+      return true;
+    }
+
+    console.log('Usuário não autenticado, acesso negado:');
+    router.navigate(['/'], { queryParams: { returnUrl: state.url } });
+    return false;
+
+      // if (!authenticated) {
+      //   const cpfOrMat = localStorage.getItem('currentUser');
+      //   if (cpfOrMat) {
+      //     const refresh = await lastValueFrom(this.loginAuthService.login(cpfOrMat))
+
+      //     if (!refresh) {
+      //       this.router.navigate([`/`], { queryParams: { returnUrl: state.url } })
+      //       return false
+      //     }
+          
+      //     return !!refresh;
+      //   }
+      //   this.router.navigate(['/']);
+      //   return false;
+      // }
+      // return authenticated;
+    } catch (error) {
+      console.error('Erro ao verificar autenticação:', error);
+      router.navigate(['/']);
+      return false;
+    }
+  
 }
+
+// export const authGuard: CanActivateFn = async (route, state) => {
+//   return await inject(AuthGuard).canActivate(route, state)
+// }
 
   // canActivate(): Observable<boolean> {
   //   const cpfOrMat = ''; // Fornecer o valor do CPF ou Matrícula aqui, ou de onde você o obtém

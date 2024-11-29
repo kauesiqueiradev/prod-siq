@@ -80,19 +80,23 @@
         "name": "20. Comum às áreas"
     },
     { 
-        "icon": "assets/icons/obsoletos.png" ,
-        "name": "21. Obsoletos"
+        "icon": "assets/icons/fluxograma.png" ,
+        "name": "21. Fluxograma de processos"
     },
     { 
-        "icon": "assets/icons/fluxograma.png" ,
-        "name": "22. Fluxogramas de processo"
+        "icon": "assets/icons/obsoletos.png" ,
+        "name": "22. Sewtech administrativo"
     },
     { 
         "icon": "assets/icons/passadoria.png" ,
-        "name": "23. Passadoria"
+        "name": "23. Ambiental"
     },
     { 
-        "icon": "assets/icons/dinheiro.png" ,
-        "name": "23. Sewtech"
+        "icon": "assets/icons/seguranca-inspecao.png" ,
+        "name": "24. Sewtech segurança"
+    },
+    { 
+        "icon": "assets/icons/laboratorio.png" ,
+        "name": "25. Laboratorio"
     }
   ]

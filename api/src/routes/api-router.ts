@@ -12,9 +12,9 @@ const rootFolderPath = '\\\\172.16.50.2\\SGQ\\';
 if (!rootFolderPath) {
     console.error('Variável de ambiente URL_FOLDER não está definida.');
     process.exit(1);
-  }
+}
 
-apiRouter.use('files', express.static(path.join(rootFolderPath, '1. Ativos', '1. Procedimentos')));
+apiRouter.use('files', express.static(path.join(rootFolderPath, '2. Procedimentos')));
 
 apiRouter.get('/get-folders', (req, res) => {
     fs.readdir(rootFolderPath, (err, files) => {
@@ -35,7 +35,7 @@ apiRouter.get('/get-files', (req, res) => {
         return res.status(400).json({ error: 'Nome da pasta não fornecido' });
     }
 
-    const subFolderPath = path.join(rootFolderPath, folderName, '1. Ativos', '1. Procedimentos');
+    const subFolderPath = path.join(rootFolderPath, folderName, '2. Procedimentos');
 
     fs.readdir(subFolderPath, (err, files) => {
         if (err) {
@@ -56,7 +56,7 @@ apiRouter.get('/get-files', (req, res) => {
 apiRouter.get('/get-file', (req,res) => {
     let folder = req.query.folder as string;
     let file = req.query.file as string;
-    const filePath = path.join(rootFolderPath, folder, '1. Ativos', '1. Procedimentos', file);
+    const filePath = path.join(rootFolderPath, folder, '2. Procedimentos', file);
 
     if (fs.existsSync(filePath)) {
         res.sendFile(filePath);

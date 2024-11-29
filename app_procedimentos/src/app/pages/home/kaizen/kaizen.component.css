@@ -1,0 +1,10 @@
+.kaizen-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.form-iframe {
+    width: 100%;
+    height: 80vh; /* Define a altura do formulário */
+    border: none;
+}

@@ -1,0 +1,30 @@
+/* .folder {
+    margin-left: 20px;
+  }
+  .video-item button {
+    background: none;
+    border: none;
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+  } */
+
+  .folder-navigation {
+    margin-bottom: 20px;
+  }
+  
+  .folder {
+    cursor: pointer;
+    color: blue;
+    margin: 5px 0;
+  }
+  
+  .video {
+    cursor: pointer;
+    color: green;
+    margin: 5px 0;
+  }
+  
+  .folder:hover, .video:hover {
+    text-decoration: underline;
+  }

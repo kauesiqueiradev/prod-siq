@@ -1,0 +1,85 @@
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Nossos Vídeos</h1>
+    <div class="folder-navigation">
+        <button *ngIf="parentPath" (click)="goBack()">Voltar</button>
+        <h3>Caminho Atual: {{ currentPath || 'Raiz' }}</h3>
+    </div>
+
+    <!-- Se um vídeo estiver selecionado, exibe o reprodutor -->
+    <div *ngIf="selectedVideoPath" class="video-player">
+        <button (click)="closeVideo()">Fechar Vídeo</button>
+        <h4>Reproduzindo: {{ selectedVideoPath }}</h4>
+        <video width="800" controls autoplay>
+        <source [src]="'http://localhost:3000/movies/play-video?path=' + selectedVideoPath" type="video/mp4">
+        Seu navegador não suporta reprodução de vídeo.
+        </video>
+    </div>
+      
+      <div class="folder-contents">
+        <ul>
+          <li *ngFor="let item of contents">
+            <div *ngIf="item.type === 'folder'" (click)="loadFolder(currentPath + '/' + item.name)" class="folder">
+              📁 {{ item.name }}
+            </div>
+            <!-- <div *ngIf="item.type === 'video'" (click)="playVideo(item.path)" class="video">
+              🎥 {{ item.name }}
+            </div> -->
+            <!-- Renderiza vídeos como miniaturas -->
+            <div *ngIf="item.type === 'video'" class="video-thumbnail" (click)="playVideo(item.path)">
+                <video 
+                [src]="'http://localhost:3000/movies/play-video?path=' + item.path" 
+                muted 
+                preload="metadata"
+                width="200"
+                height="120"
+                >
+                Seu navegador não suporta reprodução de vídeo.
+                </video>
+                <p>{{ item.name }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+     
+  
+    <!-- <div class="folders">
+      <ng-container *ngFor="let folder of folders">
+        <app-folder [folder]="folder" (videoSelected)="selectVideo($event)"></app-folder>
+      </ng-container>
+    </div>
+  
+    <div *ngIf="selectedVideo" class="video-player">
+      <h2>{{ selectedVideo.name }}</h2>
+      <video
+            [src]="selectedVideo.url"
+            controls
+            class="w-100"
+            style="height: 400px;"
+        ></video>
+    </div> -->
+  </div>
+
+
+
+<!-- <div class="container mt-4">
+    <h1 class="text-center mb-4">Nossos Vídeos</h1>
+    <div class="row">
+      
+      <div *ngFor="let video of videos" class="col-md-6 col-lg-4 mb-4">
+        <div class="card shadow-sm">
+          <iframe
+            [src]="video.url | safeUrl"
+            frameborder="0"
+            allowfullscreen
+            class="card-img-top video-player"
+            [ngClass]="{ 'expanded': selectedVideo === video }"
+          ></iframe>
+          <div class="card-body">
+            <h5 class="card-title">{{ video.title }}</h5>
+            <p class="card-text">{{ video.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->

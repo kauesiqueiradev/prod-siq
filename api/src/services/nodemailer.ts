@@ -12,8 +12,10 @@ class Mail {
     async sendMail() {
 
         const mailOptions = {
-            from: "reposicao@tecnotextil.net",
-            to: "kaue.siqueira@tecnotextil.net",
+            from: "api@tecnotextil.net",
+            // from: "reposicao@tecnotextil.net",
+            to: "qualidade@tecnotextil.net",
+            // to: "kaue.siqueira@tecnotextil.net",            
             subject: this.subject,
             html: this.message
         };

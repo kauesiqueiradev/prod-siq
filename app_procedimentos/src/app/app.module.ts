@@ -20,9 +20,13 @@ import { AboutComponent } from './pages/home/about/about.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AuthGuard } from './auth/auth.guard';
 import { HomeChildComponent } from './pages/home/home-child/home-child.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { KaizenComponent } from './pages/home/kaizen/kaizen.component';
+import { MoviesComponent } from './pages/home/movies/movies.component';
+import { SafeUrlPipe } from './pipes/safe-url.pipe';
+import { FolderComponent } from './pages/home/movies/folder/folder.component';
+
 
 @NgModule({
   declarations: [
@@ -38,6 +42,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AboutComponent,
     PdfViewerComponent,
     HomeChildComponent,
+    KaizenComponent,
+    MoviesComponent,
+    SafeUrlPipe,
+    FolderComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +59,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule,
   ],
   providers: [
-    AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: MixedContentInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

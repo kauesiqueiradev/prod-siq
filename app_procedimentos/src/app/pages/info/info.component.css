@@ -26,23 +26,36 @@
 }
 
 .header__back {
-    width: 20%;
+    width: 30%;
     display: flex;
     justify-content: flex-end;
 }
 
 .bg {
-    background-color: #383795;
+    background-color: var(--color-primary);
+    /* background-color: #383795; */
+    /* background-color: rgb(42, 42, 204); */
 }
 
 .header__back > button{
-    width: 60px;
+    width: 120px;
     height: 100%;
-    font-size: xx-large;
-    background-color: rgb(42, 42, 204);
+    font-size: x-large;
+    /* background-color: #383795; */
+    /* background-color: rgb(42, 42, 204); */
+    background-color: var(--color-primary);
     border-left: 2px solid white;
 
     color: white;
+    transition: background-color 0.3s ease;
+}
+
+.header__back > button:hover{
+    background-color: rgb(42, 42, 204);
+}
+
+.header__back > button:active{
+    background-color: rgb(42, 42, 204);
 }
 
 

@@ -8,8 +8,11 @@ import { ProceduresComponent } from './pages/home/procedures/procedures.componen
 import { CardComponent } from './pages/home/procedures/card/card.component';
 import { AboutComponent } from './pages/home/about/about.component';
 import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component';
-import { AuthGuard } from './auth/auth.guard';
+import { authGuard } from './auth/auth.guard';
 import { HomeChildComponent } from './pages/home/home-child/home-child.component';
+import { KaizenComponent } from './pages/home/kaizen/kaizen.component';
+import { MoviesComponent } from './pages/home/movies/movies.component';
+import { FolderComponent } from './pages/home/movies/folder/folder.component';
 
 const routes: Routes = [
   {
@@ -23,15 +26,27 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
     children: [
       {
         path: 'homeChild',
         component: HomeChildComponent
       },
+      // {
+      //   path: 'news',
+      //   component: NewsComponent
+      // },
       {
-        path: 'news',
-        component: NewsComponent
+        path: 'kaizen',
+        component: KaizenComponent
+      },
+      {
+        path: 'movies',
+        component: MoviesComponent
+      },
+      {
+        path: 'folders',
+        component: FolderComponent
       },
       {
         path: 'procedures',
