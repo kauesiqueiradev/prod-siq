@@ -6,12 +6,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class MoviesService {
-  private moviesUrl = "http://localhost:3000/movies/get-folders";
+  private moviesUrl = "http://localhost:3000/movies";
 
   constructor(private http: HttpClient) { }
 
 
-  getFolders(): Observable<any> {
-    return this.http.get(`${this.moviesUrl}`);
+  getFolders(path: string): Observable<any> {
+    return this.http.get(`${this.moviesUrl}/get-folders`, {
+      params: { path }
+    });
   }
 }

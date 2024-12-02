@@ -9,22 +9,64 @@
     text-decoration: underline;
   } */
 
-  .folder-navigation {
-    margin-bottom: 20px;
+  .video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
   }
-  
-  .folder {
+
+  .video-modal.active {
+    display: block;
+  }
+
+  .video-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+
+  .video-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    margin: 2% auto;
+    z-index: 1001;
+  }
+
+  .video-wrapper {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  }
+
+  video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+  }
+
+  .close-button {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
     cursor: pointer;
-    color: blue;
-    margin: 5px 0;
+    padding: 8px;
+    z-index: 1002;
   }
-  
-  .video {
-    cursor: pointer;
-    color: green;
-    margin: 5px 0;
-  }
-  
-  .folder:hover, .video:hover {
-    text-decoration: underline;
+
+  .close-button:hover {
+    opacity: 0.8;
   }

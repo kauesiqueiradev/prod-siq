@@ -1,64 +1,4 @@
-<div class="container mt-4">
-    <h1 class="text-center mb-4">Nossos Vídeos</h1>
-    <div class="folder-navigation">
-        <button *ngIf="parentPath" (click)="goBack()">Voltar</button>
-        <h3>Caminho Atual: {{ currentPath || 'Raiz' }}</h3>
-    </div>
 
-    <!-- Se um vídeo estiver selecionado, exibe o reprodutor -->
-    <div *ngIf="selectedVideoPath" class="video-player">
-        <button (click)="closeVideo()">Fechar Vídeo</button>
-        <h4>Reproduzindo: {{ selectedVideoPath }}</h4>
-        <video width="800" controls autoplay>
-        <source [src]="'http://localhost:3000/movies/play-video?path=' + selectedVideoPath" type="video/mp4">
-        Seu navegador não suporta reprodução de vídeo.
-        </video>
-    </div>
-      
-      <div class="folder-contents">
-        <ul>
-          <li *ngFor="let item of contents">
-            <div *ngIf="item.type === 'folder'" (click)="loadFolder(currentPath + '/' + item.name)" class="folder">
-              📁 {{ item.name }}
-            </div>
-            <!-- <div *ngIf="item.type === 'video'" (click)="playVideo(item.path)" class="video">
-              🎥 {{ item.name }}
-            </div> -->
-            <!-- Renderiza vídeos como miniaturas -->
-            <div *ngIf="item.type === 'video'" class="video-thumbnail" (click)="playVideo(item.path)">
-                <video 
-                [src]="'http://localhost:3000/movies/play-video?path=' + item.path" 
-                muted 
-                preload="metadata"
-                width="200"
-                height="120"
-                >
-                Seu navegador não suporta reprodução de vídeo.
-                </video>
-                <p>{{ item.name }}</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-     
-  
-    <!-- <div class="folders">
-      <ng-container *ngFor="let folder of folders">
-        <app-folder [folder]="folder" (videoSelected)="selectVideo($event)"></app-folder>
-      </ng-container>
-    </div>
-  
-    <div *ngIf="selectedVideo" class="video-player">
-      <h2>{{ selectedVideo.name }}</h2>
-      <video
-            [src]="selectedVideo.url"
-            controls
-            class="w-100"
-            style="height: 400px;"
-        ></video>
-    </div> -->
-  </div>
 
 
 
@@ -83,3 +23,75 @@
       </div>
     </div>
   </div> -->
+
+  <div class="movies-container p-4">
+    <!-- Loading and Error States -->
+    <div *ngIf="loading" class="text-center py-4">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <button *ngIf="currentFolder?.parentPath !== null"
+                  (click)="navigateBack()"
+                  class="btn btn-sm btn-light me-2">
+            <i class="bi bi-arrow-left"></i> Voltar
+          </button>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="javascript:void(0)" (click)="loadFolder('')">Início</a>
+        </li>
+        <li *ngFor="let crumb of breadcrumbs; let last = last" 
+            class="breadcrumb-item"
+            [class.active]="last">
+          {{ crumb }}
+        </li>
+      </ol>
+    </nav>
+  
+    <!-- Content Grid -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+      <!-- Folders and Videos -->
+      <div *ngFor="let item of currentFolder?.contents" class="col">
+        <!-- Folder Item -->
+        <div *ngIf="isFolder(item)" 
+             (click)="navigateToFolder(item.name)"
+             class="card folder-card h-100">
+          <div class="card-body d-flex align-items-center">
+            <i class="bi bi-folder-fill text-warning me-2 fs-4"></i>
+            <span class="text-truncate">{{ item.name }}</span>
+          </div>
+        </div>
+  
+        <!-- Video Item -->
+        <div *ngIf="isVideo(item)" 
+             class="card video-card h-100">
+          <div class="video-thumbnail position-relative" (click)="playVideo(item)">
+            
+            <div class="video-overlay">
+              <i class="bi bi-play-circle-fill"></i>
+            </div>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title text-truncate">{{ item.name }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    
+    <app-folder
+    [isOpen]="isModalOpen"
+    [videoUrl]="currentVideoUrl"
+    (closeModal)="closeVideoModal()">
+  </app-folder>
+  </div>

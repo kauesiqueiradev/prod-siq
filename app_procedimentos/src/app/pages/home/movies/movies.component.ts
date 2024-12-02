@@ -1,6 +1,27 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { response } from 'express';
 import { MoviesService } from 'src/app/services/movies/movies.service';
+
+
+interface VideoItem {
+  name: string;
+  type: 'video';
+  path: string;
+}
+
+interface FolderItem {
+  name: string;
+  type: 'folder';
+}
+
+type ContentItem = VideoItem | FolderItem;
+
+interface FolderContent {
+  currentPath: string;
+  parentPath: string | null;
+  contents: ContentItem[];
+}
 
 @Component({
   selector: 'app-movies',
@@ -8,65 +29,81 @@ import { MoviesService } from 'src/app/services/movies/movies.service';
   styleUrls: ['./movies.component.css']
 })
 export class MoviesComponent implements OnInit {
-  // folders: any[] = [];
-  // selectedVideo: any = null;
-  // constructor(private moviesService: MoviesService) { }
+  currentFolder: FolderContent | null = null;
+  breadcrumbs: string[] = [];
+  loading = false;
+  error: string | null = null;
+  isModalOpen = false;
+  currentVideoUrl = '';
 
-  // ngOnInit(): void {
-  //     this.loadFolders();
-  // }
+  private moviesUrl = "http://localhost:3000";
 
-  // loadFolders(): void {
-  //   this.moviesService.getFolders().subscribe({
-  //     next: (data) => {
-  //       this.folders = data.folders || [];
-  //     },
-  //     error: (err) => {
-  //       console.log('Erro ao carregar pastas:', err);
-  //     }
-  //   });
-  // }
+  constructor(private moviesService: MoviesService) {}
 
-  // selectVideo(video: any): void {
-  //   this.selectedVideo = video;
-  // }
-  currentPath: string = '';
-  parentPath: string | null = null;
-  contents: any[] = [];
-  selectedVideoPath: string | null = null;
-
-  constructor(private http: HttpClient) {}
-
-  ngOnInit(): void {
-    this.loadFolder();
+  ngOnInit() {
+    this.loadFolder('');
   }
 
-  loadFolder(path: string = ''): void {
-    this.http.get<any>(`http://localhost:3000/movies/get-folders`, { params: { path } }).subscribe(
-      data => {
-        this.currentPath = data.currentPath;
-        this.parentPath = data.parentPath;
-        this.contents = data.contents;
-      },
-      error => console.error('Erro ao carregar pastas:', error)
-    );
-  }
-
-  playVideo(videoPath: string): void {
-    this.selectedVideoPath = videoPath;
-    // window.open(`http://localhost:3000/movies/play-video?path=${encodeURIComponent(videoPath)}`, '_blank');
-  }
-
-  goBack(): void {
-    if (this.parentPath) {
-      this.loadFolder(this.parentPath);
+  async loadFolder(path: string) {
+    try {
+      this.loading = true;
+      this.error = null;
+      this.currentFolder = await this.moviesService.getFolders(path).toPromise();
+      this.updateBreadcrumbs(path);
+    } catch (err) {
+      this.error = 'Erro ao carregar a pasta';
+      console.error(err);
+    } finally {
+      this.loading = false;
     }
   }
-  closeVideo(): void {
-    this.selectedVideoPath = null; // Fecha o reprodutor de vídeo
+
+  private updateBreadcrumbs(path: string) {
+    if (!path) {
+      this.breadcrumbs = [];
+      return;
+    }
+    this.breadcrumbs = path.split('/').filter(Boolean);
+  }
+
+  navigateToFolder(folderName: string) {
+    const newPath = this.currentFolder?.currentPath
+      ? `${this.currentFolder.currentPath}/${folderName}`
+      : folderName;
+    this.loadFolder(newPath);
+  }
+
+  navigateBack() {
+    if (this.currentFolder?.parentPath !== null) {
+      this.loadFolder(this.currentFolder?.parentPath || '');
+    }
+  }
+
+  getVideoThumbnail(video: VideoItem): string {
+    // Aqui você pode implementar a lógica para gerar/obter thumbnails dos vídeos
+    // Por enquanto, usaremos uma imagem placeholder
+    return 'assets/video-thumbnail-placeholder.jpg';
+  }
+
+  playVideo(video: VideoItem) {
+    // Implementar a lógica de reprodução do vídeo
+    this.currentVideoUrl = `${this.moviesUrl}/movies/play-video?path=${encodeURIComponent(video.path)}`;
+    this.isModalOpen = true;
+  }
+
+  isVideo(item: ContentItem): item is VideoItem {
+    return item.type === 'video';
+  }
+
+  isFolder(item: ContentItem): item is FolderItem {
+    return item.type === 'folder';
+  }
+
+  closeVideoModal() {
+    this.isModalOpen = false;
+    this.currentVideoUrl = '';
   }
 }
-
 
 
 

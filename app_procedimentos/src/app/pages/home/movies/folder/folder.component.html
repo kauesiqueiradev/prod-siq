@@ -1,17 +1,17 @@
-<div class="folder-navigation">
-    <button *ngIf="parentPath" (click)="goBack()">Voltar</button>
-    <h3>Caminho Atual: {{ currentPath || 'Raiz' }}</h3>
+<div class="video-modal" [class.active]="isOpen">
+  <div class="video-modal-overlay" (click)="close()"></div>
+  <div class="video-modal-content">
+    <button class="close-button" (click)="close()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <div class="video-wrapper">
+      <video 
+        #videoPlayer 
+        [src]="videoUrl" 
+        controls 
+        autoplay
+        (click)="$event.stopPropagation()"
+      ></video>
+    </div>
   </div>
-  
-  <div class="folder-contents">
-    <ul>
-      <li *ngFor="let item of contents">
-        <div *ngIf="item.type === 'folder'" (click)="loadFolder(currentPath + '/' + item.name)" class="folder">
-          📁 {{ item.name }}
-        </div>
-        <div *ngIf="item.type === 'video'" (click)="playVideo(item.path)" class="video">
-          🎥 {{ item.name }}
-        </div>
-      </li>
-    </ul>
-  </div>
+</div>

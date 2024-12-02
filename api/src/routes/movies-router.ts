@@ -8,6 +8,18 @@ const rootFolderPath = '\\\\172.16.50.2\\sequencia_videos\\';
 // X:\Costura\1. Arquivo em geral\01. Sequências Operacionais\02. Sequências Operacionais
 
 
+interface Video {
+  name: string;
+  type: 'video';
+  path: string;
+}
+
+interface Category {
+  folder: string;
+  videos: Video[];
+  categories: Category[];
+}
+
 if (!rootFolderPath) {
   console.error('Caminho da pasta raiz não definido.');
   process.exit(1);
@@ -91,6 +103,45 @@ moviesRouter.get('/play-video', (req, res) => {
   }
 
   res.sendFile(videoPath);
+});
+
+moviesRouter.get('/get-categories', (req, res) => {
+  function getCategoryStructure(folderPath: string): Category {
+    const items = fs.readdirSync(folderPath);
+    const categories: Category[] = [];
+    const videos: Video[] = [] as any;
+
+    items.forEach(item => {
+      const fullPath = path.join(folderPath, item);
+      const stats = fs.statSync(fullPath);
+
+      if (stats.isDirectory()) {
+        categories.push( getCategoryStructure(fullPath));
+      } else if (stats.isFile() && videoExtensions.includes(path.extname(item).toLowerCase())) {
+        videos.push({
+          name: item,
+          path: fullPath,
+          type: 'video'
+        });
+      }     
+    });
+
+    return {
+      folder: folderPath,
+      videos: videos,
+      categories: categories
+    };
+  }
+
+  try {
+    const data = getCategoryStructure(rootFolderPath);
+    console.log("Dados: ",data.categories);
+    console.log("Dados completos: ", JSON.stringify(data, null, 2));
+    res.json({ categories: data });
+  } catch (error) {
+    console.error('Erro ao listar categorias:', error);
+    res.status(500).json({ error: 'Erro ao listar categorias' });
+  }
 });
 
 export default moviesRouter
