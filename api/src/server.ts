@@ -6,6 +6,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import bodyParser from 'body-parser';
 import moviesRouter from './routes/movies-router';
+import fichaRouter from './routes/ficha-router';
 
 const port = 3000;
 const url = 'localhost';
@@ -60,6 +61,8 @@ const specs = swaggerJsdoc(swaggerOptions);
 app.use('/app', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use('/api', apiRouter );
+
+app.use('/ficha', fichaRouter );
 
 app.use('/email', emailRouter);
 

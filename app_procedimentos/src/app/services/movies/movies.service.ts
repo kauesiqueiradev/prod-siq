@@ -16,4 +16,9 @@ export class MoviesService {
       params: { path }
     });
   }
+
+  playVideo(path: string): string {
+    // Constrói a URL para reprodução do vídeo com o path fornecido
+    return `${this.moviesUrl}/play-video?path=${encodeURIComponent(path)}`;
+  }
 }

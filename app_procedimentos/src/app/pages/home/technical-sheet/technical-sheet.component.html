@@ -1,0 +1,68 @@
+<div class="container p-4">
+    <h2>Ficha Técnica</h2>
+
+    <div *ngIf="!selectedFile" class="file-list">
+      <div class="input-group mb-3">
+        <span class="input-group-text">
+          <i class="bi bi-search"></i> <!-- Ícone do Bootstrap Icons -->
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Pesquisar ficha técnica..."
+          [(ngModel)]="searchQuery"
+          (input)="filterFiles()"
+        />
+      </div>
+
+      <div class="card-details text-center table-responsive overflow-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Arquivo</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="files && files.length > 0; else noFiles">
+            <tr *ngFor="let file of filteredFiles" >
+              <td> {{ file.filename }}</td>
+              <td>
+                <!-- <a (click)="openFile(folderName, file.fileUrl)" target="_blank" class="btn btn-primary">Visualizar</a> -->
+                <a (click)="selectFile(file.filepath)" class="btn btn-primary">Visualizar</a>
+              </td>
+    
+            </tr>
+          </tbody>
+          <ng-template #noFiles>
+            <tr>
+              <td colspan="2">{{ errorMessage }}</td>
+            </tr>
+          </ng-template>
+        </table>
+      </div>
+    </div>
+    
+    <!-- <div *ngIf="selectedFile" class="pdf-viewer">
+      <button class="btn btn-secondary mb-3" (click)="goBack()">Voltar</button>
+      <iframe
+        [src]="selectedFile | safeUrl"
+        width="100%"
+        height="1000px"
+        frameborder="0"
+      ></iframe>
+    </div> -->
+
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+	<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"><b>{{selectedFile}}</b></h4>
+		<button type="button" class="btn-close bg-danger" aria-label="Close" (click)="d('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+        <ngx-extended-pdf-viewer [src]="pdfUrl" height="1000px" width="1000px" [textLayer]="true"></ngx-extended-pdf-viewer>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger" (click)="goBack()">Close</button>
+	</div>
+</ng-template>

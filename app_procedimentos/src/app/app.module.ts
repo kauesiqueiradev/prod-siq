@@ -26,6 +26,7 @@ import { KaizenComponent } from './pages/home/kaizen/kaizen.component';
 import { MoviesComponent } from './pages/home/movies/movies.component';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { FolderComponent } from './pages/home/movies/folder/folder.component';
+import { TechnicalSheetComponent } from './pages/home/technical-sheet/technical-sheet.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { FolderComponent } from './pages/home/movies/folder/folder.component';
     KaizenComponent,
     MoviesComponent,
     SafeUrlPipe,
-    FolderComponent
+    FolderComponent,
+    TechnicalSheetComponent
   ],
   imports: [
     BrowserModule,

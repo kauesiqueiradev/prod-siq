@@ -13,6 +13,7 @@ import { HomeChildComponent } from './pages/home/home-child/home-child.component
 import { KaizenComponent } from './pages/home/kaizen/kaizen.component';
 import { MoviesComponent } from './pages/home/movies/movies.component';
 import { FolderComponent } from './pages/home/movies/folder/folder.component';
+import { TechnicalSheetComponent } from './pages/home/technical-sheet/technical-sheet.component';
 
 const routes: Routes = [
   {
@@ -45,8 +46,8 @@ const routes: Routes = [
         component: MoviesComponent
       },
       {
-        path: 'folders',
-        component: FolderComponent
+        path: 'technical-sheet',
+        component: TechnicalSheetComponent
       },
       {
         path: 'procedures',

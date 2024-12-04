@@ -37,7 +37,6 @@ export class LoginAuthService {
        
         // return user ? user : null;
         this.isAuthenticated$ = of(!!user);
-        console.log('Usuário encontrado:', user);
         return user || null;
       }),
       catchError(() => {

@@ -36,8 +36,6 @@ export class MoviesComponent implements OnInit {
   isModalOpen = false;
   currentVideoUrl = '';
 
-  private moviesUrl = "http://localhost:3000";
-
   constructor(private moviesService: MoviesService) {}
 
   ngOnInit() {
@@ -79,16 +77,24 @@ export class MoviesComponent implements OnInit {
     }
   }
 
-  getVideoThumbnail(video: VideoItem): string {
-    // Aqui você pode implementar a lógica para gerar/obter thumbnails dos vídeos
-    // Por enquanto, usaremos uma imagem placeholder
-    return 'assets/video-thumbnail-placeholder.jpg';
-  }
-
   playVideo(video: VideoItem) {
     // Implementar a lógica de reprodução do vídeo
-    this.currentVideoUrl = `${this.moviesUrl}/movies/play-video?path=${encodeURIComponent(video.path)}`;
+    // this.currentVideoUrl = this.moviesService.playVideo(video.path);
+    this.currentVideoUrl = this.getVideoUrl(video);
+    console.log('Video URL:', video.path);
     this.isModalOpen = true;
+
+    const videoElement = document.querySelector('video') as HTMLVideoElement;
+
+    if (videoElement) {
+      // Garantir que o vídeo seja mudo enquanto no estado compacto
+      videoElement.muted = true;
+    }
+  }
+
+  getVideoUrl(video: VideoItem): string {
+    // Usa o serviço para construir a URL do vídeo
+    return this.moviesService.playVideo(video.path);
   }
 
   isVideo(item: ContentItem): item is VideoItem {
@@ -102,9 +108,20 @@ export class MoviesComponent implements OnInit {
   closeVideoModal() {
     this.isModalOpen = false;
     this.currentVideoUrl = '';
+
+    const videoElement = document.querySelector('video') as HTMLVideoElement;
+    if (videoElement) {
+      videoElement.muted = true;  // Silencia o áudio ao fechar o modal
+    }
   }
 }
 
+
+// getVideoThumbnail(video: VideoItem): string {
+  //   // Aqui você pode implementar a lógica para gerar/obter thumbnails dos vídeos
+  //   // Por enquanto, usaremos uma imagem placeholder
+  //   return 'assets/video-thumbnail-placeholder.jpg';
+  // }
 
 
 // export class MoviesComponent {

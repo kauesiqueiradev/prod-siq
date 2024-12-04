@@ -17,17 +17,14 @@ export const authGuard: CanActivateFn = async (route, state) => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
     if (currentUser?.role === 'Visitante') {
-      console.log('Visitante autorizado:', currentUser);
       return true;
     }
 
     const authenticated = await lastValueFrom(loginAuthService.isAuthenticated$);
     if (authenticated) {
-      console.log('Usuário autentica via API:', currentUser);
       return true;
     }
 
-    console.log('Usuário não autenticado, acesso negado:');
     router.navigate(['/'], { queryParams: { returnUrl: state.url } });
     return false;
 

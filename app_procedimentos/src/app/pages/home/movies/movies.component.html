@@ -75,7 +75,14 @@
         <div *ngIf="isVideo(item)" 
              class="card video-card h-100">
           <div class="video-thumbnail position-relative" (click)="playVideo(item)">
-            
+            <video 
+                [src]="getVideoUrl(item)" 
+                class="card-img-top" 
+                [autoplay]="false" 
+                [muted]="true" 
+                loop>
+                Seu navegador não suporta o elemento de vídeo.
+            </video>
             <div class="video-overlay">
               <i class="bi bi-play-circle-fill"></i>
             </div>

@@ -55,20 +55,16 @@ export class LoginComponent{
 
     this.authService.login(this.cpfOrMat).subscribe({
       next: (user) => {
-        console.log('Usuario encontrado Login:', user);
-
         if (user) {
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.router.navigate(['/home']);
         } else {
           if (this.cpfOrMat.length === 11 && this.validarCPF(this.cpfOrMat)) {
-            console.log('Logando como visitante');
             const visitorUser = { role: 'Visitante', cpfOrMat: this.cpfOrMat };
             localStorage.setItem('currentUser', JSON.stringify(visitorUser));
             this.router.navigate(['/home']);
           } else {
             this.cpfOrMatInvalid = true;
-            console.log('CPF inválido ou matrícula não encontrada');
           }
         }
         this.cpfOrMat = '';
