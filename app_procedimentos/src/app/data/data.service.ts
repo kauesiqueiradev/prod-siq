@@ -11,9 +11,9 @@ export interface FileData {
 })
 export class DataService {
 
-  private apiUrl = 'http://localhost:3000/api';
+  // private apiUrl = 'http://localhost:3000/api';
   // private apiUrl = 'http://172.16.50.14:3000/api';
-  // private apiUrl = 'http://siq.grupotecnotextil.com:3000/api';
+  private apiUrl = 'http://siq.grupotecnotextil.com:3000/api';
   private iconsUrl = 'assets/icons.json';
 
   constructor(private http: HttpClient) { }

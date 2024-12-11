@@ -175,3 +175,9 @@
     color: rgba(255, 255, 255, 0.8);
     pointer-events: none;
   } */
+
+  no-videos-message {
+    margin: 10px 0;
+    color: red;
+    font-weight: bold;
+  }

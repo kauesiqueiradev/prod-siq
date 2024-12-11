@@ -59,13 +59,13 @@ export class LoginComponent{
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.router.navigate(['/home']);
         } else {
-          if (this.cpfOrMat.length === 11 && this.validarCPF(this.cpfOrMat)) {
-            const visitorUser = { role: 'Visitante', cpfOrMat: this.cpfOrMat };
-            localStorage.setItem('currentUser', JSON.stringify(visitorUser));
-            this.router.navigate(['/home']);
-          } else {
+          // if (this.cpfOrMat.length === 11 && this.validarCPF(this.cpfOrMat)) {
+          //   const visitorUser = { role: 'Visitante', cpfOrMat: this.cpfOrMat };
+          //   localStorage.setItem('currentUser', JSON.stringify(visitorUser));
+          //   this.router.navigate(['/home']);
+          // } else {
             this.cpfOrMatInvalid = true;
-          }
+          // }
         }
         this.cpfOrMat = '';
       },

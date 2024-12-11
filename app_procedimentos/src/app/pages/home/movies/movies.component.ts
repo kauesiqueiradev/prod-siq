@@ -35,6 +35,7 @@ export class MoviesComponent implements OnInit {
   error: string | null = null;
   isModalOpen = false;
   currentVideoUrl = '';
+  noVideosMessage: string | null = null;
 
   constructor(private moviesService: MoviesService) {}
 
@@ -46,7 +47,17 @@ export class MoviesComponent implements OnInit {
     try {
       this.loading = true;
       this.error = null;
+      this.noVideosMessage = null;
       this.currentFolder = await this.moviesService.getFolders(path).toPromise();
+      
+      if (this.currentFolder) {
+        const hasVideos = this.currentFolder.contents.some(item => this.isVideo(item));
+        const hasFolders = this.currentFolder.contents.some(item => this.isFolder(item));
+        if (!hasVideos && !hasFolders) {
+          this.noVideosMessage = 'Não há vídeos para exibir;'
+        }
+      }
+      
       this.updateBreadcrumbs(path);
     } catch (err) {
       this.error = 'Erro ao carregar a pasta';
@@ -78,7 +89,6 @@ export class MoviesComponent implements OnInit {
   }
 
   playVideo(video: VideoItem) {
-    // Implementar a lógica de reprodução do vídeo
     // this.currentVideoUrl = this.moviesService.playVideo(video.path);
     this.currentVideoUrl = this.getVideoUrl(video);
     console.log('Video URL:', video.path);

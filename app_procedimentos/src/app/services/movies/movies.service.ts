@@ -6,7 +6,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class MoviesService {
-  private moviesUrl = "http://localhost:3000/movies";
+  // private moviesUrl = "http://localhost:3000/movies";
+  private moviesUrl = 'http://siq.grupotecnotextil.com:3000/movies';
 
   constructor(private http: HttpClient) { }
 
