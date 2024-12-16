@@ -24,19 +24,20 @@ export class LoginAuthService {
       'Authorization': basicAuth
     });
 
-    return this.http.get<User>(`${this.apiUrl}/get_all?page=1&limit=10000`, { headers: headers})
+    return this.http.get<User[]>(`${this.apiUrl}/get_all?page=1&limit=10000`, { headers })
     .pipe(
       map((response:any) => {
         const user = response.objects.find((obj: any) => obj.cic === cpfOrMat || obj.mat === cpfOrMat);
 
-        if (user) {
-          this.isAuthenticated$ = of(true)
-        } else {
-          this.isAuthenticated$ = of(false)
-        }
+        // if (user) {
+        //   this.isAuthenticated$ = of(true)
+        // } else {
+        //   this.isAuthenticated$ = of(false)
+        // }
        
-        return user ? user : null;
-        
+        // return user ? user : null;
+        this.isAuthenticated$ = of(!!user);
+        return user || null;
       }),
       catchError(() => {
         this.isAuthenticated$ = of(false);

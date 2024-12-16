@@ -30,7 +30,7 @@ export class AsideComponent {
 
   toggleSidebar() {
     this.isSidebarExpanded = !this.isSidebarExpanded;
-    console.log('Trocou aside');
+    // console.log('Trocou aside');
     this.sidebarSerbive.toggleSidebar(this.isSidebarExpanded);
   }
 

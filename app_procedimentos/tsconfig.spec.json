@@ -6,7 +6,8 @@
     "types": [
       "jasmine",
       "@angular/localize"
-    ]
+    ],
+    "preserveSymlinks": true
   },
   "include": [
     "src/**/*.spec.ts",

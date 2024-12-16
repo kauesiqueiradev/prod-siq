@@ -1,0 +1,17 @@
+<div class="video-modal" [class.active]="isOpen">
+  <div class="video-modal-overlay" (click)="close()"></div>
+  <div class="video-modal-content">
+    <button class="close-button" (click)="close()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <div class="video-wrapper">
+      <video 
+        #videoPlayer 
+        [src]="videoUrl" 
+        controls 
+        autoplay
+        (click)="$event.stopPropagation()"
+      ></video>
+    </div>
+  </div>
+</div>

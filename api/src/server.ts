@@ -5,6 +5,9 @@ import emailRouter from './routes/email-routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import bodyParser from 'body-parser';
+import moviesRouter from './routes/movies-router';
+import fichaRouter from './routes/ficha-router';
+import logsRouter from './routes/logs-router';
 
 const port = 3000;
 const url = 'localhost';
@@ -21,6 +24,8 @@ const url = 'localhost';
 const app = express();
 app.use(bodyParser.json());
 
+const rootFolderPath = '\\\\172.16.50.2\\sequencia_videos\\';
+
 // app.get('/', (req, res) => {
 //     res.send('Página Home da minha API!')
 // })
@@ -30,7 +35,8 @@ app.use(bodyParser.json());
 // }));
 
 app.use(cors({
-    origin: 'http://localhost:4200',
+    origin: '*',
+    // origin: 'http://localhost:4200',
     credentials: true,
 }))
 
@@ -57,7 +63,13 @@ app.use('/app', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use('/api', apiRouter );
 
+app.use('/ficha', fichaRouter );
+
 app.use('/email', emailRouter);
+
+app.use('/movies', moviesRouter);
+
+app.use('/log', logsRouter);
 
 app.use((req, res) => {
     res.status(404).send('Página não encontrada.');

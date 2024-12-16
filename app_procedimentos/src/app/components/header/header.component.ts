@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import * as bootstrap from 'bootstrap';
 import { NavbarService } from 'src/app/services/navbar/navbar.service';
 
 @Component({
@@ -14,17 +15,41 @@ export class HeaderComponent {
     const storedUser = localStorage.getItem('currentUser');
     // console.log("header:", storedUser);
     
-    if (storedUser !== null) {
-      const parsedUser = JSON.parse(storedUser);
-      const firstSpaceIndex = parsedUser.nome.indexOf(' ');
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
 
-      if (firstSpaceIndex !== -1) {
-        this.userIdentifier = parsedUser.nome.substring(0, firstSpaceIndex);
-        this.userIdentifierType = parsedUser.identifier;
-      } else {
-        this.userIdentifier = parsedUser.identifier;
+        if (parsedUser && parsedUser.nome) {
+          const firstSpaceIndex = parsedUser.nome.indexOf(' ');
+
+          if (firstSpaceIndex !== -1) {
+            this.userIdentifier = parsedUser.nome.substring(0, firstSpaceIndex);
+            this.userIdentifierType = parsedUser.identifier;
+          } else {
+            this.userIdentifier = parsedUser.identifier;
+          }
+        } else {
+          this.userIdentifier = 'Visitante';
+          this.userIdentifierType = 'Desconhecido';
+        }
+      } catch (error) {
+        console.error('Erro ao analisar os dados do usuário no localStorage:', error);
+        this.userIdentifier = 'Visitante';
+        this.userIdentifierType = 'Desconhecido';
       }
-    } 
+      // const parsedUser = JSON.parse(storedUser);
+      // const firstSpaceIndex = parsedUser.nome.indexOf(' ');
+
+      // if (firstSpaceIndex !== -1) {
+      //   this.userIdentifier = parsedUser.nome.substring(0, firstSpaceIndex);
+      //   this.userIdentifierType = parsedUser.identifier;
+      // } else {
+      //   this.userIdentifier = parsedUser.identifier;
+      // }
+    }  else {
+      this.userIdentifier = 'Visitante';
+      this.userIdentifierType = 'Desconhecido';
+    }
     // console.log(this.userIdentifier);
   }
 
@@ -40,6 +65,21 @@ export class HeaderComponent {
 
   toggleSidebar() {
     this.toggleSidebarEvent.emit();
+  }
+
+  closeOffcanvas() {
+    // Encontre o elemento offcanvas pelo ID e feche-o
+    var offcanvasElement = document.getElementById('aside');
+    if (offcanvasElement !== null) {
+      var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+      if (offcanvas) {
+          offcanvas.hide();
+      } else {
+          console.error('Offcanvas instance not found.');
+      }
+    } else {
+        console.error('Offcanvas element not found.');
+    }
   }
 
 }

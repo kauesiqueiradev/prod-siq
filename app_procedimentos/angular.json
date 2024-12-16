@@ -24,8 +24,8 @@
               "src/favicon.ico",
               "src/assets",
               {
-                "glob": "**/*",
-                "input": "node_modules/ngx-extended-pdf-viewer/assets/",
+                "glob": "**/*.{js,css,html,png,svg,woff,woff2}",
+                "input": "./node_modules/ngx-extended-pdf-viewer/assets/",
                 "output": "/assets/"
               }
             ],
@@ -96,8 +96,8 @@
               "src/favicon.ico",
               "src/assets",
               {
-                "glob": "**/*",
-                "input": "node_modules/ngx-extended-pdf-viewer/assets/",
+                "glob": "**/*.{js,css,html,png,svg,woff,woff2}",
+                "input": "./node_modules/ngx-extended-pdf-viewer/assets/",
                 "output": "/assets/"
               }
             ],
