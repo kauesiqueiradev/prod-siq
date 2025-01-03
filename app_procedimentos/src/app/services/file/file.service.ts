@@ -6,8 +6,8 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FileService {
-  // private apiUrl = 'http://localhost:3000/ficha/files'
-  private apiUrl = 'http://siq.grupotecnotextil.com:3000/ficha/files';
+  private apiUrl = 'http://localhost:3000/ficha/files'
+  // private apiUrl = 'http://siq.grupotecnotextil.com:3000/ficha/files';
 
   constructor(private http: HttpClient) { }
 

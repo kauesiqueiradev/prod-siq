@@ -14,6 +14,8 @@ import { KaizenComponent } from './pages/home/kaizen/kaizen.component';
 import { MoviesComponent } from './pages/home/movies/movies.component';
 import { FolderComponent } from './pages/home/movies/folder/folder.component';
 import { TechnicalSheetComponent } from './pages/home/technical-sheet/technical-sheet.component';
+import { VacancyComponent } from './pages/home/vacancy/vacancy.component';
+import { CurriculumComponent } from './pages/home/curriculum/curriculum.component';
 
 const routes: Routes = [
   {
@@ -33,10 +35,6 @@ const routes: Routes = [
         path: 'homeChild',
         component: HomeChildComponent
       },
-      // {
-      //   path: 'news',
-      //   component: NewsComponent
-      // },
       {
         path: 'kaizen',
         component: KaizenComponent
@@ -56,6 +54,14 @@ const routes: Routes = [
       {
         path: 'procedures/:folderName',
         component: CardComponent
+      },
+      {
+        path: 'vacancy',
+        component: VacancyComponent
+      },
+      {
+        path: 'curriculum',
+        component: CurriculumComponent
       },
       {
         path: 'about',

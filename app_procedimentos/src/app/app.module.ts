@@ -27,6 +27,8 @@ import { MoviesComponent } from './pages/home/movies/movies.component';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { FolderComponent } from './pages/home/movies/folder/folder.component';
 import { TechnicalSheetComponent } from './pages/home/technical-sheet/technical-sheet.component';
+import { VacancyComponent } from './pages/home/vacancy/vacancy.component';
+import { CurriculumComponent } from './pages/home/curriculum/curriculum.component';
 
 
 @NgModule({
@@ -47,7 +49,9 @@ import { TechnicalSheetComponent } from './pages/home/technical-sheet/technical-
     MoviesComponent,
     SafeUrlPipe,
     FolderComponent,
-    TechnicalSheetComponent
+    TechnicalSheetComponent,
+    VacancyComponent,
+    CurriculumComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,43 @@
+.curriculum-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .curriculum-form h3 {
+    margin-bottom: 20px;
+  }
+  
+  .curriculum-form .form-label {
+    font-weight: bold;
+  }
+  
+  .curriculum-form button {
+    margin-top: 20px;
+  }
+
+  .container {
+    position: relative;
+  }
+  
+  .fixed-title {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 10px 15px;
+    z-index: 1000;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .form-container {
+    margin-top: 30px;
+    max-height: calc(100vh - 30vh); 
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }

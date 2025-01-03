@@ -1,0 +1,83 @@
+<div class="container mt-5">
+    <h2 class="fw-bold mb-4">Preencher Currículo</h2>
+    <div class="form-container">
+        <form (ngSubmit)="enviarCurriculo()">
+        <div class="row">
+            <div class="col-md-8 mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input id="nome" type="text" class="form-control" [(ngModel)]="formData.nome" name="nome" readonly>
+            </div>
+    
+            <div class="col-md-4 mb-3">
+                <label for="matricula" class="form-label">Matrícula</label>
+                <input id="matricula" type="text" class="form-control" [(ngModel)]="formData.matricula" name="matricula" readonly>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-8 mb-3">
+                <label for="cargoPretendido" class="form-label">Cargo Pretendido</label>
+                <input id="cargoPretendido" type="text" class="form-control" [(ngModel)]="formData.cargoPretendido" name="cargoPretendido" readonly>
+            </div>
+    
+            <div class="col-md-4 mb-3">
+                <label for="dataAtual" class="form-label">Data Atual/ Hora</label>
+                <input id="dataAtual" type="text" class="form-control" [(ngModel)]="formData.dataAtual" name="dataAtual" readonly>
+            </div>
+        </div>
+    
+        <div class="mb-3">
+            <label for="setor" class="form-label">Setor</label>
+            <input id="setor" type="text" class="form-control" [(ngModel)]="formData.setor" name="setor" readonly>
+        </div>
+    
+        <div class="mb-3">
+            <label for="cargoAtual" class="form-label">Cargo Atual</label>
+            <input id="cargoAtual" type="text" class="form-control" [(ngModel)]="formData.cargoAtual" name="cargoAtual">
+        </div>
+    
+        <div class="mb-3">
+            <label for="areaAtual" class="form-label">Área Atual</label>
+            <input id="areaAtual" type="text" class="form-control" [(ngModel)]="formData.areaAtual" name="areaAtual">
+        </div>
+    
+        <div class="mb-3">
+            <label for="gestorImediato" class="form-label">Gestor Imediato</label>
+            <input id="gestorImediato" type="text" class="form-control" [(ngModel)]="formData.gestorImediato" name="gestorImediato">
+        </div>
+    
+        <div class="mb-3">
+            <label for="lider" class="form-label">Líder</label>
+            <input id="lider" type="text" class="form-control" [(ngModel)]="formData.lider" name="lider">
+        </div>
+    
+        <div class="mb-3">
+            <label for="dataAdmissao" class="form-label">Data de Admissão</label>
+            <input id="dataAdmissao" type="date" class="form-control" [(ngModel)]="formData.dataAdmissao" name="dataAdmissao">
+        </div>
+    
+        <div class="mb-3">
+            <label for="horarioTrabalho" class="form-label">Horário de Trabalho</label>
+            <input id="horarioTrabalho" type="text" class="form-control" [(ngModel)]="formData.horarioTrabalho" name="horarioTrabalho">
+        </div>
+    
+        <div class="mb-3">
+            <label for="advertencias" class="form-label">Possui Advertências nos últimos 90 dias?</label>
+            <select id="advertencias" class="form-select" [(ngModel)]="formData.advertencias" name="advertencias">
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+            </select>
+        </div>
+    
+        <div class="mb-3">
+            <label for="motivo" class="form-label">Motivo para candidatura</label>
+            <textarea id="motivo" class="form-control" [(ngModel)]="formData.motivo" name="motivo"></textarea>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" (click)="voltarParaVagas()">Voltar para Vagas</button>
+            <button type="submit" class="btn btn-primary">Enviar Currículo</button>
+        </div>
+        </form>
+    </div>
+  </div>
