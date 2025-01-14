@@ -69,7 +69,6 @@ function getFolderContents(folderPath: string): any[] {
 }
 
 moviesRouter.get('/get-folders', (req, res) => {
-  console.log('Rota /get-folders acessada 1');
   // try {
   //   const folders = getFolderContents(rootFolderPath);
   //   res.json({ folders });

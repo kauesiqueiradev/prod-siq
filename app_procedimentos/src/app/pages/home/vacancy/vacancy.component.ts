@@ -55,30 +55,41 @@ export class VacancyComponent implements OnInit {
 
   fetchVacancies(): void {
     this.isLoading = true;
-    this.http.get<{ objects: any[] }>('http://172.16.50.9:9104/rest/ZWS_SQS/get_interna?')
+    this.http.get<{ objects: any[] }>('http://172.16.50.9:9104/rest/ZWS_SQS/get_vaga?tipo_vaga=I&tipo_vaga=I/E')
     .pipe(
       catchError(error => {
         console.error('Erro ao buscar vagas:', error);
         return of({ objects: [] }); 
       })
     )   
-    .subscribe(response => {
+    .subscribe({
+      next: (response) => {
       this.vagas = response.objects.map(vaga => ({
         ...vaga,
         cidade: this.mapCity(vaga.empresa),
         data: vaga.dtabert
       }));
+      console.log('vaga ok:', this.vagas),
+      this.cidades = [...new Set(this.vagas.map(vaga => {
+        if (vaga.empresa) {
+          return this.mapCity(vaga.empresa);
+        } else {
+          console.warn('Empresa ausente na vaga:', vaga);
+          return 'Cidade não informada';
+        }
+      }))];
       this.vagas = this.vagas.sort((a: any, b: any) => b.data.localeCompare(a.data));
       this.vagasFiltradas = [...this.vagas];
       this.populateFilters();
       this.isLoading = false;
-    }, () => {
+    },
+    error: () => {
       this.isLoading = false;
-    }); 
+    }}); 
   }
 
   searchTermChanged() {
-    this.http.get<{ objects: any[] }>('http://172.16.50.9:9104/rest/ZWS_SQS/get_interna?')
+    this.http.get<{ objects: any[] }>('http://172.16.50.9:9104/rest/ZWS_SQS/get_vaga?tipo_vaga=I&tipo_vaga=I/E')
       .pipe(
         debounceTime(300),
         catchError(error => {
@@ -89,16 +100,20 @@ export class VacancyComponent implements OnInit {
       .subscribe(response => {
         this.vagas = response.objects;
         this.filterVagas();
+        console.log('vagas:', this.vagas);
       });
   }
 
   mapCity(empresa: string): string {
+    console.log('mapCity', empresa);
     const mapping: { [ key: string]: string } = {
       '1': 'Três Pontas',
       '2': 'Varginha',
       '3': 'Monsenhor Paulo'
     };
-    return mapping[empresa] || 'Cidade não informada';
+    const cidade = mapping[empresa] || 'Cidade não informada';
+    console.log('cidades:', cidade);
+    return cidade;
   }
 
   populateFilters(): void {
