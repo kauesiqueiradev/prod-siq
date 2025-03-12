@@ -52,9 +52,13 @@ const routes: Routes = [
         component: ProceduresComponent,
       },
       {
-        path: 'procedures/:folderName',
+        path: 'procedures/:empresa/:setor',
         component: CardComponent
       },
+      // {
+      //   path: 'procedures/:folderName',
+      //   component: CardComponent
+      // },
       {
         path: 'vacancy',
         component: VacancyComponent

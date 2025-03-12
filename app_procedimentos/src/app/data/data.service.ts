@@ -11,25 +11,39 @@ export interface FileData {
 })
 export class DataService {
 
-  private apiUrl = 'http://localhost:3000/api';
+  // private apiUrl = 'http://localhost:3000/api';
   // private apiUrl = 'http://172.16.50.14:3000/api';
-  // private apiUrl = 'http://siq.grupotecnotextil.com:3000/api';
+  private apiUrl = 'http://siq.grupotecnotextil.com:3000/api';
   private iconsUrl = 'assets/icons.json';
 
   constructor(private http: HttpClient) { }
+
+  getEmpresas(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-companies`);
+  }
+
+  getSetores(company: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-sectors?company=${encodeURIComponent(company)}`);
+  }
+
+  getFiles(company: string, sector: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-files?company=${encodeURIComponent(company)}&sector=${encodeURIComponent(sector)}`);
+  }
 
   getFolder(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/get-folders`).pipe(
     );
   }
 
-  getFiles(folderPath: string):Observable<FileData[]> {
+  getFiless(folderPath: string):Observable<FileData[]> {
     return this.http.get<FileData[]>(`${this.apiUrl}/get-files?folder=${folderPath}`).pipe(
       // tap((data: any) => console.log('Arquivos da pasta:', data))
     )
   }
 
   GenerateInvoicePDF(folderName: string, fileName: string){
+    console.log('nomes Service:', folderName, fileName);
+    console.log('url:', `${this.apiUrl}/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`);
     return this.http.get(`${this.apiUrl}/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`,{observe:'response',responseType:'blob'});  
   }
 

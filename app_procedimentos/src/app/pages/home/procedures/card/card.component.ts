@@ -24,6 +24,7 @@ export class CardComponent implements OnInit{
   files: FileData[] = [];
   errorMessage: string = '';
   selectedFileName: string = '';
+  empresa: string = '';
 
   @ViewChild('content') popupview !: ElementRef;
 
@@ -36,13 +37,17 @@ export class CardComponent implements OnInit{
   
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.folderName = params['folderName'];
-      this.getFiles(this.folderName);
+      // this.folderName = params['folderName'];
+      // this.getFiles(this.folderName);
+      const empresa = params['empresa'];
+      const setor = params['setor'];
+      this.folderName = setor; 
+      this.getFiles(empresa, setor);
     })
   }
 
-  getFiles(folder: string): void {
-    this.folderService.getFiles(folder).subscribe(
+  getFiles(empresa: string, setor: string): void {
+    this.folderService.getFiles(empresa, setor).subscribe(
       (data: any) => {
         // console.log("data:", data);
         if (data && data.files && Array.isArray(data.files) && data.files.length > 0) {
@@ -74,6 +79,7 @@ export class CardComponent implements OnInit{
   }
 
   PreviewInvoice(folderName: string, fileName: string) {
+    console.log('nomes:', folderName, fileName);
     this.folderService.GenerateInvoicePDF(folderName, fileName).subscribe({
       next: (res: any) => {
         let blob: Blob = res.body as Blob;
@@ -99,7 +105,7 @@ export class CardComponent implements OnInit{
     return Math.ceil(this.cards.length / this.itensPorPagina);
   }
 
-  goBackToProcedures() {
+  goBackToProcedures(): void {
     this.router.navigate(['/home/procedures']);
   }
 }

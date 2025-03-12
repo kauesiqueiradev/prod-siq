@@ -98,5 +98,17 @@
     { 
         "icon": "assets/icons/laboratorio.png" ,
         "name": "25. Laboratorio"
+    },
+    { 
+        "icon": "assets/icons/almoxarifado.png" ,
+        "name": "Sewtech - VGA"
+    },
+    { 
+        "icon": "assets/icons/obsoletos.png" ,
+        "name": "Sewtech - MSP"
+    },
+    { 
+        "icon": "assets/icons/desenvolvimento.png" ,
+        "name": "Tecnotextil"
     }
   ]

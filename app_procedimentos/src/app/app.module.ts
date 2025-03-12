@@ -29,7 +29,7 @@ import { FolderComponent } from './pages/home/movies/folder/folder.component';
 import { TechnicalSheetComponent } from './pages/home/technical-sheet/technical-sheet.component';
 import { VacancyComponent } from './pages/home/vacancy/vacancy.component';
 import { CurriculumComponent } from './pages/home/curriculum/curriculum.component';
-
+import { DateFormaterPipe } from './pipes/date-formater.pipe';
 
 @NgModule({
   declarations: [
@@ -51,7 +51,8 @@ import { CurriculumComponent } from './pages/home/curriculum/curriculum.componen
     FolderComponent,
     TechnicalSheetComponent,
     VacancyComponent,
-    CurriculumComponent
+    CurriculumComponent,
+    DateFormaterPipe,
   ],
   imports: [
     BrowserModule,

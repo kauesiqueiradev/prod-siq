@@ -10,9 +10,9 @@ import fichaRouter from './routes/ficha-router';
 import logsRouter from './routes/logs-router';
 
 const port = 3000;
-const url = 'localhost';
+// const url = 'localhost';
 // const port = process.env.PORT || 3000;
-// const url = process.env.URL || 'http://siq.grupotecnotextil.com';
+const url = process.env.URL || 'http://siq.grupotecnotextil.com';
 
 // const allowedOrigins  = [
 //     'http://localhost:4200',
@@ -35,8 +35,9 @@ const rootFolderPath = '\\\\172.16.50.2\\sequencia_videos\\';
 // }));
 
 app.use(cors({
-    origin: '*',
+    // origin: '*',
     // origin: 'http://localhost:4200',
+    origin: 'http://siq.grupotecnotextil.com',
     credentials: true,
 }))
 

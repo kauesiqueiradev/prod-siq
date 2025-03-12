@@ -4,6 +4,15 @@ import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { catchError, debounceTime, of } from 'rxjs';
 
+interface Vaga {
+  descric: string;
+  cidade: string;
+  cc: string;
+  empresa: string;
+  data: string;
+  perfi: string;
+}
+
 @Component({
   selector: 'app-vacancy',
   templateUrl: './vacancy.component.html',
@@ -12,50 +21,48 @@ import { catchError, debounceTime, of } from 'rxjs';
 export class VacancyComponent implements OnInit {
   vagas: any[] = [];
   vagasFiltradas: any[] = [];
-  cidades: string[] = ['Três Pontas', 'Varginha', 'Monsenhor Paulo'];
+  cidades: string[] = [];
   setores: string[] = [];
   searchTerm: string = '';
   selectedCity: string = '';
   selectedSetor: string = '';
-  vagaSelecionada: any = null;
   selectedOrder: string = 'dateNewest';
+  vagaSelecionada: Vaga | null = null;
+
   isLoading: boolean = true;
   currentPage: number = 1;
   itemsPerPage: number = 9;
-  private touchStartX: number = 0;
+
   exibirFormulario: boolean = false;
-  usuarioLogado: any;
+  usuarioLogado: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router) {
+  private touchStartX: number = 0;
+
+  constructor(private http: HttpClient, private router: Router) {}
+
+  ngOnInit(): void {
+    this.loadUserData();
+    this.fetchVacancies();
+    // this.searchTermChanged();
+  }
+
+  private loadUserData(): void {
     const storedUser = localStorage.getItem('currentUser');
-
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
-
-        if (parsedUser && parsedUser.nome) {
-          const firstSpaceIndex = parsedUser.nome.indexOf(' ');
-          if (firstSpaceIndex !== -1) {
-            this.usuarioLogado = parsedUser.nome.substring(0, firstSpaceIndex);
-          }
-        } 
+        this.usuarioLogado = parsedUser.nome?.split(' ')[0] || null;
       } catch (error) {
-        console.error('Erro ao analisar os dados do usuário no localStorage:', error);
+        console.error('Erro ao carregar usuário:', error);
       }
-    }  else {
-     
     }
-    
-  }
-
-  ngOnInit(): void {
-    this.fetchVacancies();
-    this.searchTermChanged();
   }
 
   fetchVacancies(): void {
     this.isLoading = true;
-    this.http.get<{ objects: any[] }>('http://172.16.50.9:9104/rest/ZWS_SQS/get_vaga?tipo_vaga=I&tipo_vaga=I/E')
+    const apiUrl = 'http://172.16.50.9:9104/rest/ZWS_SQS/get_vaga?tipo_vaga=I&tipo_vaga=I/E';
+
+    this.http.get<{ objects: any[] }>(apiUrl)
     .pipe(
       catchError(error => {
         console.error('Erro ao buscar vagas:', error);
@@ -69,18 +76,13 @@ export class VacancyComponent implements OnInit {
         cidade: this.mapCity(vaga.empresa),
         data: vaga.dtabert
       }));
-      console.log('vaga ok:', this.vagas),
-      this.cidades = [...new Set(this.vagas.map(vaga => {
-        if (vaga.empresa) {
-          return this.mapCity(vaga.empresa);
-        } else {
-          console.warn('Empresa ausente na vaga:', vaga);
-          return 'Cidade não informada';
-        }
-      }))];
-      this.vagas = this.vagas.sort((a: any, b: any) => b.data.localeCompare(a.data));
+      
       this.vagasFiltradas = [...this.vagas];
-      this.populateFilters();
+      this.cidades = [...new Set(this.vagas.map(vaga => vaga.cidade))];
+      // this.vagas = this.vagas.sort((a: any, b: any) => b.data.localeCompare(a.data));
+      this.setores = [...new Set(this.vagas.map(vaga => vaga.cc))];
+      // this.populateFilters();
+      this.sortVagas();
       this.isLoading = false;
     },
     error: () => {
@@ -88,39 +90,39 @@ export class VacancyComponent implements OnInit {
     }}); 
   }
 
-  searchTermChanged() {
-    this.http.get<{ objects: any[] }>('http://172.16.50.9:9104/rest/ZWS_SQS/get_vaga?tipo_vaga=I&tipo_vaga=I/E')
-      .pipe(
-        debounceTime(300),
-        catchError(error => {
-          console.error('Erro ao buscar vagas:', error);
-          return of({ objects: [] });
-        })
-      )
-      .subscribe(response => {
-        this.vagas = response.objects;
-        this.filterVagas();
-        console.log('vagas:', this.vagas);
-      });
-  }
+  // searchTermChanged() {
+  //   this.http.get<{ objects: any[] }>('http://172.16.50.9:9104/rest/ZWS_SQS/get_vaga?tipo_vaga=I&tipo_vaga=I/E')
+  //     .pipe(
+  //       debounceTime(300),
+  //       catchError(error => {
+  //         console.error('Erro ao buscar vagas:', error);
+  //         return of({ objects: [] });
+  //       })
+  //     )
+  //     .subscribe(response => {
+  //       this.vagas = response.objects;
+  //       this.filterVagas();
+  //       console.log('vagas:', this.vagas);
+  //     });
+  // }
 
-  mapCity(empresa: string): string {
+  private mapCity(empresa: string): string {
     console.log('mapCity', empresa);
-    const mapping: { [ key: string]: string } = {
+    const mapping: Record<string, string> = {
       '1': 'Três Pontas',
       '2': 'Varginha',
       '3': 'Monsenhor Paulo'
     };
-    const cidade = mapping[empresa] || 'Cidade não informada';
-    console.log('cidades:', cidade);
-    return cidade;
+    // const cidade = 
+    // console.log('cidades:', cidade);
+    return mapping[empresa] || 'Cidade não informada';
   }
 
-  populateFilters(): void {
-    this.setores = [...new Set(this.vagas.map(vaga => vaga.cc))];
-  }
+  // populateFilters(): void {
+  //   this.setores = [...new Set(this.vagas.map(vaga => vaga.cc))];
+  // }
 
-  filterVagas() {
+  filterVagas(): void {
     this.vagasFiltradas = this.vagas.filter(vaga => {
       const matchesSearch = this.searchTerm
         ? vaga.descric.toLowerCase().includes(this.searchTerm.toLowerCase())
@@ -134,7 +136,11 @@ export class VacancyComponent implements OnInit {
   
       return matchesSearch && matchesCity && matchesSetor;
     });
-  
+
+    this.sortVagas();
+  }
+
+  private sortVagas(): void {
     if (this.selectedOrder === 'dateNewest') {
       this.vagasFiltradas.sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
     } else if (this.selectedOrder === 'dateOldest') {
