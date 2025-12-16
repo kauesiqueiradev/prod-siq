@@ -29,28 +29,47 @@
     <div *ngIf="exibindoSetores && empresaSelecionada; else empresasView">
       <h2 class="fs-5 mb-4">Setores de {{ empresaSelecionada }}</h2>
       <button (click)="voltarParaEmpresas()" class="btn btn-secondary mb-3">Voltar</button>
-            
-      <div class="home__box w-100 bs-primary" [style.gridTemplateColumns]="columnsTemplate">
-        <div *ngFor="let setor of setores[empresaSelecionada] || [] | paginate: { itemsPerPage: count, currentPage: pag }"  (click)="abrirSetor(empresaSelecionada , setor)">
-          <div class="home__card" >
-            <img [src]="getIconUrl(setor)" [alt]="setor" class="text-light">
-            <p>{{ setor }}</p>
+
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner diameter="40" strokeWidth="4"></mat-spinner>
+        <p>Carregando setores...</p>
+      </div>
+
+      <div *ngIf="!isLoading">
+        <div class="home__box w-100 bs-primary" [style.gridTemplateColumns]="columnsTemplate">
+          <div *ngFor="let setor of setores[empresaSelecionada] || [] | paginate: { itemsPerPage: count, currentPage: pag }; trackBy: trackByFn"  (click)="abrirSetor(empresaSelecionada , setor)">
+            <div class="home__card" >
+              <img [src]="getIconUrl(setor)" [alt]="setor" class="text-light">
+              <p>{{ setor }}</p>
+            </div>
           </div>
         </div>
       </div>
+            
+      
     </div>
 
     <!-- Caso contrário, exibe as empresas -->
     <ng-template #empresasView>
       <h1 class="fs-5 mb-4">Empresas</h1>
-      <div class="home__box w-100 bs-primary" [style.gridTemplateColumns]="columnsTemplate">
-        <div *ngFor="let empresa of empresas | paginate: { itemsPerPage: count, currentPage: pag }"  (click)="getSetores(empresa)">
-          <div class="home__card">
-            <img [src]="getIconUrl(empresa)" [alt]="empresa" class="text-light">
-            <h5>{{ empresa }}</h5>
+
+      <div *ngIf="isLoading && !exibindoSetores" class="loading-container">
+        <mat-spinner diameter="40" strokeWidth="4"></mat-spinner>
+        <p>Carregando empresas...</p>
+      </div>
+
+      <div *ngIf="!isLoading && !exibindoSetores">
+        <div class="home__box w-100 bs-primary" [style.gridTemplateColumns]="columnsTemplate">
+          <div *ngFor="let empresa of empresas | paginate: { itemsPerPage: count, currentPage: pag }"  (click)="getSetores(empresa)">
+            <div class="home__card">
+              <img [src]="getIconUrl(empresa)" [alt]="empresa" class="text-light">
+              <h5>{{ empresa }}</h5>
+            </div>
           </div>
         </div>
       </div>
+
+      
     </ng-template>
     
     <div class="home__footer" >

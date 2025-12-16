@@ -7,7 +7,9 @@ const apiRouter = express.Router()
 // const rootFolderPath = '/mnt/win/';
 // const rootFolderPath = '172.16.50.2/server 2018\\Sistema de Gestao da Qualidade\\';
 // const rootFolderPath = 'X:\\Sistema de Gestao da Qualidade\\';
-const rootFolderPath = '\\\\172.16.50.2\\SGQ\\';
+// const rootFolderPath = '\\\\172.16.50.2\\SGQ\\';
+const rootFolderPath = '\\\\192.168.100.250\\SGQ\\';
+
 
 if (!rootFolderPath) {
     console.error('Variável de ambiente URL_FOLDER não está definida.');
@@ -119,33 +121,33 @@ apiRouter.get('/get-files', (req, res) => {
 });
 
 
-apiRouter.get('/get-file', (req,res) => {
-    let folder = req.query.folder as string;
-    let file = req.query.file as string;
-    const filePath = path.join(rootFolderPath, folder, '2. Procedimentos', file);
-
-    if (fs.existsSync(filePath)) {
-        res.sendFile(filePath);
-    } else {
-        res.status(404).json({ error: 'Arquivo não encontrado' });
-    }
-})
 // apiRouter.get('/get-file', (req,res) => {
-//     const company = req.query.company as string;
-//     const sector = req.query.sector as string;
-//     const file = req.query.file as string;
-
-//     if (!company || !sector || !file) {
-//         return res.status(400).json({ error: 'Parâmetros insuficientes' });
-//     }
-
-//     const filePath = path.join(rootFolderPath, company, sector, '2. Procedimentos', file);
+//     let folder = req.query.folder as string;
+//     let file = req.query.file as string;
+//     const filePath = path.join(rootFolderPath, folder, '2. Procedimentos', file);
 
 //     if (fs.existsSync(filePath)) {
 //         res.sendFile(filePath);
 //     } else {
 //         res.status(404).json({ error: 'Arquivo não encontrado' });
 //     }
-// });
+// })
+apiRouter.get('/get-file', (req,res) => {
+    const company = req.query.company as string;
+    const sector = req.query.sector as string;
+    const file = req.query.file as string;
+
+    if (!company || !sector || !file) {
+        return res.status(400).json({ error: 'Parâmetros insuficientes' });
+    }
+
+    const filePath = path.join(rootFolderPath, company, sector, '2. Procedimentos', file);
+
+    if (fs.existsSync(filePath)) {
+        res.sendFile(filePath);
+    } else {
+        res.status(404).json({ error: 'Arquivo não encontrado' });
+    }
+});
 
 export default apiRouter

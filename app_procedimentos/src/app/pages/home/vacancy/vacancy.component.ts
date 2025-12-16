@@ -60,9 +60,12 @@ export class VacancyComponent implements OnInit {
 
   fetchVacancies(): void {
     this.isLoading = true;
-    const apiUrl = 'http://172.16.50.9:9104/rest/ZWS_SQS/get_vaga?tipo_vaga=I&tipo_vaga=I/E';
+    const apiUrl = 'http://172.16.50.9:9107/rest/ZWS_SQS/get_vaga?tipo_vaga=I&tipo_vaga=I/E';
+    const credentials = `${'API_TI'}:${'!$@Tecno%'}`;
+    const encodedCredentials = btoa(credentials);
+    const basicAuth = `Basic ${encodedCredentials}`;
 
-    this.http.get<{ objects: any[] }>(apiUrl)
+    this.http.get<{ objects: any[] }>(apiUrl, { headers: { 'Authorization': basicAuth } })
     .pipe(
       catchError(error => {
         console.error('Erro ao buscar vagas:', error);

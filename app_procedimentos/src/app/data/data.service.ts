@@ -41,10 +41,17 @@ export class DataService {
     )
   }
 
-  GenerateInvoicePDF(folderName: string, fileName: string){
-    console.log('nomes Service:', folderName, fileName);
-    console.log('url:', `${this.apiUrl}/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`);
-    return this.http.get(`${this.apiUrl}/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`,{observe:'response',responseType:'blob'});  
+  // funcionando pela pasta principal
+  // GenerateInvoicePDF(folderName: string, fileName: string){
+  //   console.log('nomes Service:', folderName, fileName);
+  //   console.log('url:', `${this.apiUrl}/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`);
+  //   return this.http.get(`${this.apiUrl}/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`,{observe:'response',responseType:'blob'});  
+  // }
+
+  GenerateInvoicePDF(company: string, sector: string, fileName: string){
+    const url = `${this.apiUrl}/get-file?company=${encodeURIComponent(company)}&sector=${encodeURIComponent(sector)}&file=${encodeURIComponent(fileName)}`;
+    console.log('URL:', url);
+    return this.http.get(url, { observe: 'response', responseType: 'blob' });  
   }
 
   // getOpenFileUrl(folder: string, file: string): string {

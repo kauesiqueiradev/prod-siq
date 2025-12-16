@@ -94,6 +94,16 @@
     /* border: 1px solid red; */
 }
 
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    gap: 10px;
+    color: #555;
+  }
+
 @media (min-width: 1440px) {
     .home__card {
         height: 8rem;

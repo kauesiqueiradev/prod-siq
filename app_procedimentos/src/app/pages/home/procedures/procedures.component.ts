@@ -127,6 +127,7 @@ export class ProceduresComponent implements OnInit{
   setores: { [empresa: string]: string[] } = {}; // Lista de setores por empresa
   empresaSelecionada: string | null = null; // Empresa selecionada para exibir os setores
   exibindoSetores = false;
+  iconsMap: Map<string, string> = new Map();
 
   public sectors: { icon: string, name: string }[]= [];
 
@@ -134,6 +135,7 @@ export class ProceduresComponent implements OnInit{
   count: number = 8;
   columns: number = 1;
   icons: any;
+  isLoading = false;
 
   constructor(private dataService: DataService, private router: Router) {}
 
@@ -173,19 +175,36 @@ export class ProceduresComponent implements OnInit{
   }
 
   getEmpresas(): void {
-    this.dataService.getEmpresas().subscribe((data: any) => {
-      this.empresas = data.companies || [];
+    this.isLoading = true;
+
+    this.dataService.getEmpresas().subscribe({
+      next: (data: any) => {
+        this.empresas = data.companies || [];
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      }
     });
   }
 
   getSetores(empresa: string): void {
     this.empresaSelecionada = empresa;
     this.exibindoSetores = true;
+    this.isLoading = true;
 
     if (!this.setores[empresa]) {
-      this.dataService.getSetores(empresa).subscribe((data: any) => {
-        this.setores[empresa] = data.sectors || [];
+      this.dataService.getSetores(empresa).subscribe({
+        next: (data: any) => {
+          this.setores[empresa] = data.sectors || [];
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
+        }
       });
+    } else {
+      this.isLoading = false;
     }
   }
 
@@ -201,11 +220,35 @@ export class ProceduresComponent implements OnInit{
   loadIcons(): void {
     this.dataService.getIcons().subscribe(icons => {
       this.icons = icons; // Alteração aqui: atribuir os ícones para a propriedade correta (this.icons)
+
+      this.icons.forEach((icon: { name: string; icon: string }) => {
+        this.iconsMap.set(icon.name.toLowerCase(), icon.icon);
+      });
     });
   }
-  
-  getIconUrl(cardName: string): string {
-    const similarIcon = this.icons.find((icon: { name: string; }) => cardName.toLowerCase().includes(icon.name.toLowerCase()));
-    return similarIcon ? similarIcon.icon : ''; // Retorna o URL do ícone se encontrado, senão retorna uma string vazia
+
+  trackByFn(index: number, item: any): any {
+    return item; // ou item.id se houver
   }
+
+  getIconUrl(cardName: string): string {
+    const normalize = (str: string) =>
+      str
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove acentos
+        .replace(/^\d+\.\s*/, '') // Remove prefixos numéricos "1. "
+        .toLowerCase();
+  
+    const normalizedCardName = normalize(cardName);
+  
+    const similarIcon = this.icons.find((icon: { name: string }) =>
+      normalize(icon.name).includes(normalizedCardName)
+    );
+  
+    return similarIcon ? similarIcon.icon : 'assets/icons/default.png';
+  }
+  
+  // getIconUrl(cardName: string): string {
+  //   const similarIcon = this.icons.find((icon: { name: string; }) => cardName.toLowerCase().includes(icon.name.toLowerCase()));
+  //   return similarIcon ? similarIcon.icon : 'assets/icons/default.png'; // Retorna o URL do ícone se encontrado, senão retorna uma string vazia
+  // }
 }
