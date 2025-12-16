@@ -11,7 +11,7 @@ interface User{
 })
 export class LoginAuthService {
   // private apiUrl = "https://172.16.50.12:9002/rest/ZWS_SRA";
-  private apiUrl = "https://172.16.50.9:9103/rest/ZWS_SRA";
+  private apiUrl = "https://172.16.50.9:9107/rest/ZWS_SRA";
   // http://172.16.50.9:9103/rest
 
   isAuthenticated$: Observable<boolean> = of(false)
@@ -19,12 +19,16 @@ export class LoginAuthService {
   constructor(private http: HttpClient) { }
 
   login(cpfOrMat:string): Observable<User | null>{
-    const basicAuth = 'Basic VVNFUkFQSTohQFQzY24wdDN4dCFsJQ==';
+    const credentials = `${'API_TI'}:${'!$@Tecno%'}`;
+    const encodedCredentials = btoa(credentials); // Use btoa for base64 encoding in the browser
+    // const encodedCredentials = Buffer.from(credentials).toString('base64');
+    const basicAuth = `Basic ${encodedCredentials}`;
+    // const basicAuth = 'Basic VVNFUkFQSTohQFQzY24wdDN4dCFsJQ==';
     const headers = new HttpHeaders({
       'Authorization': basicAuth
     });
 
-    return this.http.get<User[]>(`${this.apiUrl}/get_all?page=1&limit=10000`, { headers })
+    return this.http.get<User[]>(`${this.apiUrl}/get_all?cempresa=01&cfilial=01&page=1&limit=10000&ccusto=`, { headers })
     .pipe(
       map((response:any) => {
         const user = response.objects.find((obj: any) => obj.cic === cpfOrMat || obj.mat === cpfOrMat);

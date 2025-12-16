@@ -27,7 +27,10 @@ import { MoviesComponent } from './pages/home/movies/movies.component';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { FolderComponent } from './pages/home/movies/folder/folder.component';
 import { TechnicalSheetComponent } from './pages/home/technical-sheet/technical-sheet.component';
-
+import { VacancyComponent } from './pages/home/vacancy/vacancy.component';
+import { CurriculumComponent } from './pages/home/curriculum/curriculum.component';
+import { DateFormaterPipe } from './pipes/date-formater.pipe';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,10 @@ import { TechnicalSheetComponent } from './pages/home/technical-sheet/technical-
     MoviesComponent,
     SafeUrlPipe,
     FolderComponent,
-    TechnicalSheetComponent
+    TechnicalSheetComponent,
+    VacancyComponent,
+    CurriculumComponent,
+    DateFormaterPipe,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +65,7 @@ import { TechnicalSheetComponent } from './pages/home/technical-sheet/technical-
     NgxExtendedPdfViewerModule,
     MatSnackBarModule,
     NgbModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: MixedContentInterceptor, multi: true }

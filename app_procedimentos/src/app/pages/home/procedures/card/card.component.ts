@@ -24,6 +24,8 @@ export class CardComponent implements OnInit{
   files: FileData[] = [];
   errorMessage: string = '';
   selectedFileName: string = '';
+  empresa: string = '';
+  isLoading: boolean = false;
 
   @ViewChild('content') popupview !: ElementRef;
 
@@ -36,57 +38,67 @@ export class CardComponent implements OnInit{
   
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.folderName = params['folderName'];
-      this.getFiles(this.folderName);
+      // this.folderName = params['folderName'];
+      // this.getFiles(this.folderName);
+      this.empresa = params['empresa'];
+      const setor = params['setor'];
+      this.folderName = setor; 
+      this.isLoading = true;
+      setTimeout(() => {
+        this.getFiles(this.empresa, setor);
+      });
     })
   }
 
-  getFiles(folder: string): void {
-    this.folderService.getFiles(folder).subscribe(
+  getFiles(empresa: string, setor: string): void {
+    console.log('Parâmetros:', empresa, setor);
+    
+    this.folderService.getFiles(empresa, setor).subscribe(
       (data: any) => {
-        // console.log("data:", data);
         if (data && data.files && Array.isArray(data.files) && data.files.length > 0) {
-          const pdfFiles = data.files.filter((fileData: { fileName: string; }) => {
-            return fileData.fileName.toLowerCase().endsWith('.pdf');
-          });
+          const pdfFiles = data.files.filter((fileData: { fileName: string; }) =>
+            fileData.fileName.toLowerCase().endsWith('.pdf')
+          );
   
-          if (pdfFiles.length > 0) {
-            this.files = pdfFiles;
-          } else {
-            this.files = [];
-            this.errorMessage = "Não há arquivos PDF nesta pasta.";
-          }
+          this.files = pdfFiles.length > 0 ? pdfFiles : [];
+          this.errorMessage = pdfFiles.length > 0 ? '' : "Não há arquivos PDF nesta pasta.";
         } else {
           this.files = [];
-          if (data && data.error === 'Erro ao ler a pasta') {
-            this.errorMessage = "A pasta não existe.";
-          } else {
-            this.errorMessage = "Essa pasta não contém a pasta: Arquivos PDFs!";
-          }
+          this.errorMessage = data?.error === 'Erro ao ler a pasta'
+            ? "A pasta não existe."
+            : "Essa pasta não contém a pasta: Arquivos PDFs!";
         }
+        this.isLoading = false; // Fim do carregamento
       },
       error => {
         console.error('Erro ao buscar arquivos:', error);
         this.files = [];
         this.errorMessage = "Essa pasta não contém a pasta: Arquivos PDFs!";
+        this.isLoading = false; // Fim do carregamento mesmo com erro
       }
     );
   }
 
-  PreviewInvoice(folderName: string, fileName: string) {
-    this.folderService.GenerateInvoicePDF(folderName, fileName).subscribe({
+
+
+  PreviewInvoice(empresa: string, setor: string, fileName: string) {
+    console.log('Parâmetros:', empresa, setor, fileName);
+    this.isLoading = true;
+    this.folderService.GenerateInvoicePDF(empresa, setor, fileName).subscribe({
       next: (res: any) => {
         let blob: Blob = res.body as Blob;
         let url = window.URL.createObjectURL(blob);
         this.pdfUrl = url;
         this.selectedFileName = fileName;
-
-        this.modalservice.open(this.popupview, { fullscreen: true , animation: true });
-        
-      }, error: (error: any) => {
-        console.error('Erro ao gerar o PDF do fatura:', error);
+  
+        this.modalservice.open(this.popupview, { fullscreen: true, animation: true });
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        console.error('Erro ao gerar o PDF da fatura:', error);
+        this.isLoading = false;
       }
-    })
+    });
   }
 
   getPaginaArquivos(): any[] {
@@ -99,7 +111,7 @@ export class CardComponent implements OnInit{
     return Math.ceil(this.cards.length / this.itensPorPagina);
   }
 
-  goBackToProcedures() {
+  goBackToProcedures(): void {
     this.router.navigate(['/home/procedures']);
   }
 }

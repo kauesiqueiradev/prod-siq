@@ -18,19 +18,40 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
+  getEmpresas(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-companies`);
+  }
+
+  getSetores(company: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-sectors?company=${encodeURIComponent(company)}`);
+  }
+
+  getFiles(company: string, sector: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-files?company=${encodeURIComponent(company)}&sector=${encodeURIComponent(sector)}`);
+  }
+
   getFolder(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/get-folders`).pipe(
     );
   }
 
-  getFiles(folderPath: string):Observable<FileData[]> {
+  getFiless(folderPath: string):Observable<FileData[]> {
     return this.http.get<FileData[]>(`${this.apiUrl}/get-files?folder=${folderPath}`).pipe(
       // tap((data: any) => console.log('Arquivos da pasta:', data))
     )
   }
 
-  GenerateInvoicePDF(folderName: string, fileName: string){
-    return this.http.get(`${this.apiUrl}/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`,{observe:'response',responseType:'blob'});  
+  // funcionando pela pasta principal
+  // GenerateInvoicePDF(folderName: string, fileName: string){
+  //   console.log('nomes Service:', folderName, fileName);
+  //   console.log('url:', `${this.apiUrl}/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`);
+  //   return this.http.get(`${this.apiUrl}/get-file?folder=${encodeURIComponent(folderName)}&file=${encodeURIComponent(fileName)}`,{observe:'response',responseType:'blob'});  
+  // }
+
+  GenerateInvoicePDF(company: string, sector: string, fileName: string){
+    const url = `${this.apiUrl}/get-file?company=${encodeURIComponent(company)}&sector=${encodeURIComponent(sector)}&file=${encodeURIComponent(fileName)}`;
+    console.log('URL:', url);
+    return this.http.get(url, { observe: 'response', responseType: 'blob' });  
   }
 
   // getOpenFileUrl(folder: string, file: string): string {

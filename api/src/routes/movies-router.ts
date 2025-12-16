@@ -4,7 +4,8 @@ import path from 'path';
 
 const moviesRouter = express.Router()
 
-const rootFolderPath = '\\\\172.16.50.2\\sequencia_videos\\';
+// const rootFolderPath = '\\\\172.16.50.2\\sequencia_videos\\';
+const rootFolderPath = '\\\\192.168.100.250\\sequencia_videos\\';
 // X:\Costura\1. Arquivo em geral\01. Sequências Operacionais\02. Sequências Operacionais
 
 
@@ -69,7 +70,6 @@ function getFolderContents(folderPath: string): any[] {
 }
 
 moviesRouter.get('/get-folders', (req, res) => {
-  console.log('Rota /get-folders acessada 1');
   // try {
   //   const folders = getFolderContents(rootFolderPath);
   //   res.json({ folders });

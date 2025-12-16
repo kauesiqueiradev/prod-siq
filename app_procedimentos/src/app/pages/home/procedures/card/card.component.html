@@ -5,6 +5,11 @@
     <button (click)="goBackToProcedures()" class="btn btn-primary">Voltar</button>
   </div>
 
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner diameter="50" strokeWidth="4"></mat-spinner>
+    <p class="mt-2 text-white">Carregando arquivos...</p>
+  </div>
+
   <div class="card-details text-center table-responsive overflow-auto">
     <table>
       <thead>
@@ -13,12 +18,17 @@
           <th>Ações</th>
         </tr>
       </thead>
-      <tbody *ngIf="files && files.length > 0; else noFiles">
+    
+      <tbody *ngIf="!isLoading  && files && files.length > 0; else noFiles">
         <tr *ngFor="let file of files" >
           <td> {{ file.fileName }}</td>
           <td>
             <!-- <a (click)="openFile(folderName, file.fileUrl)" target="_blank" class="btn btn-primary">Visualizar</a> -->
-            <a (click)="PreviewInvoice(folderName, file.fileName)" class="btn btn-primary">Visualizar</a>
+
+            <!-- Funcionando pela pasta principal -->
+            <!-- <a (click)="PreviewInvoice(folderName, file.fileName)" class="btn btn-primary">Visualizar</a> -->
+
+            <a (click)="PreviewInvoice(empresa, folderName, file.fileName)" class="btn btn-primary">Visualizar</a>
           </td>
 
         </tr>
